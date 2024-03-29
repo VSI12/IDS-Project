@@ -89,6 +89,7 @@ def train_model():
 
     X = df.drop(columns=['label'])
     y = df['label']
+    
     print('x and y')
     print(X, y)
 
