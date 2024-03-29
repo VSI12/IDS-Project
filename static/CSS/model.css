@@ -1,0 +1,143 @@
+body {
+  margin: 0;
+  padding: 0;
+  background: linear-gradient(rgba(10, 10, 10, 0.267),rgba(0,0,0,.9)), repeating-linear-gradient(0, transparent, transparent 2px, rgba(0, 0, 0, 0.363) 3px, black 3px),
+		url(images/Untitled.png);
+  background-repeat: no-repeat;
+  background-position: center;
+ background-attachment: fixed;
+ background-size: cover;
+}
+
+body, html {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
+
+.container {
+  height: 100%;
+}
+
+.black-section {
+  background-color: black;
+  height: 10%;
+}
+
+.content-section {
+  height: 90%; /* Take up the remaining height */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.content {
+  display: flex;
+  justify-content: space-between;
+  width: 90%; /* Adjust as needed */
+}
+
+.box {
+  width: 30%; /* Adjust as needed */
+  height: 75vh; /* Adjust as needed */
+  background-color: #36323259; /* Sample background color */
+  backdrop-filter: blur(10px);
+
+  font-family: 'ISOCTEUR', sans-serif;
+  font-size: 35px;
+  text-align: center;
+  color: white;
+  letter-spacing: 3px;
+  font-weight: lighter;
+
+  white-space: nowrap; /* Prevent text wrapping */
+  word-wrap: break-word;
+
+}
+.DT{
+  background-color: #313131;
+  backdrop-filter: blur(5px);
+ 
+  height: 700px; /* Adjust as needed */
+}
+
+.text{
+  display: flex;
+  font-size: 65px;
+  font-family: 'ISOCTEUR', sans-serif;
+  font-weight: 500;
+  color:rgb(255, 255, 255);
+  justify-content: center;
+  align-items: center;
+  letter-spacing: 3px;
+
+  text-overflow: ellipsis;
+  overflow: hidden;
+  margin: auto;
+
+  width: 100%; /* Ensure content fills the container width */
+    white-space: nowrap; /* Prevent text wrapping */
+    word-wrap: break-word;
+}
+
+.ann{
+  padding: 50px 100px;
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #313131;
+  color: white;
+  border: none;
+  border-radius: 5px;
+ 
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+
+  font-family: 'ISOCTEUR', sans-serif;
+  font-size: 80px;
+  font-weight: 1000;
+  letter-spacing: 3px;
+
+  
+}
+
+.box:hover {
+  background-color: #000000; /* Change background color on hover */
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  color:aqua
+}
+
+h1{
+  font-size: 60px;
+  font-weight: lighter;
+  padding-top: 150px;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+h2{
+  font-size: 25px;
+  font-weight: lighter;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  letter-spacing: 0.01px;
+}
+h3{
+  font-size: 30px;
+  font-weight: lighter;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+.black{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+ 
+}
+.back{
+  filter:grayscale(100%)
+}
+.back:hover{
+  filter: grayscale(0);
+}

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Choose Model</title>
+    <link rel="icon" type="image/x-icon" href="static/CSS/images/choice.png">
+    <link rel="stylesheet" type="text/css" href="static/CSS/model.css"> 
+    <link href="https://fonts.cdnfonts.com/css/isocteur" rel="stylesheet">
+    <style>
+        @import url('https://fonts.cdnfonts.com/css/isocteur');
+    </style>
+</head>
+<body>
+    <div class="container">
+      <div class="black-container">
+         <section class="black-section">
+          <div class="black">
+            <a href="/" id="image-link">
+               <img src="static/CSS/images/back cyan.png" alt="" class="back" id="back">
+            </a>
+            <div class="text">
+              CHOOSE MACHINE LEARNING MODEL
+            </div>
+          </div>
+         </section>
+      </div>
+     
+
+      <section class="content-section">
+        <div class="content">
+
+          <div class="box" id="DT" onclick="window.location.href='/upload'">
+              <h1>Decision <br> Tree</h1>
+              <h3>with <br> feature selection</h3>
+          </div>
+
+          <div class="box" id="ANN" onclick="window.location.href='/upload'">
+              <h1>ANN</h1>
+              <h2>(Artificial Neural Networks)</h2>
+              <h3>with <br> feature selection</h3>
+          </div>
+
+          <div class="box" id="SVM">
+              <h1>SVM</h1>
+              <h2>(Support Vector Machine)</h2>
+              <h3>with <br> feature selection</h3>
+          </div>
+        </div>
+      </section>
+    </div>
+    <script src="static/JavaScript/model.js"></script>
+</body>
+</html>

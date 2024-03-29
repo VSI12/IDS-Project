@@ -1,0 +1,193 @@
+body {
+    margin: 0;
+    padding: 0;
+    background: linear-gradient(rgba(10, 10, 10, 0.267),rgba(0,0,0,.9)), repeating-linear-gradient(0, transparent, transparent 2px, rgba(0, 0, 0, 0.363) 3px, black 3px),
+		url(images/Untitled.png);
+    background-repeat: no-repeat;
+    background-position: center;
+   background-attachment: fixed;
+   background-size: cover;
+  }
+  
+  body, html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+  }
+  
+  .container {
+    height: 100%;
+  }
+  
+  .black-section {
+    background-color: black;
+    height: 10%;
+  }
+  
+  .content-section {
+    height: 90%; /* Take up the remaining height */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .box {
+    
+    
+    background-color: #00000059; /* Sample background color */
+    backdrop-filter: blur(10px);
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    
+    white-space: nowrap; /* Prevent text wrapping */
+    word-wrap: break-word;
+    min-width: auto;
+  
+    font-family: 'ISOCTEUR', sans-serif;
+    font-size: 30px;
+    text-align: center;
+    font-weight: 50;
+    color: white;
+    letter-spacing: 3px;
+  }
+  .click{
+    width: 100%;
+  }
+
+  .text{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+
+    width: 100%;
+    white-space: nowrap; /* Prevent text wrapping */
+    word-wrap: break-word;
+
+    font-size: 70px;
+    font-family: 'ISOCTEUR', sans-serif;
+    font-weight: 500;
+    color:rgb(255, 255, 255);
+    
+    letter-spacing: 3px;
+  }
+
+  .black{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+   
+  }
+
+.red{
+  font-size: 35px;
+    color: red;
+    padding-top: 50px;
+    font-weight: 50;
+    margin-left:20px;
+}
+.dt{
+  font-size: 30px;
+    font-weight: 50;
+    padding-top: 35px;
+}
+
+.select{
+  background-color: #000000;
+  font-size: 20px;
+  font-family: 'ISOCTEUR', sans-serif;
+  
+}
+
+
+/*
+input[type="submit"] {
+    padding: 50px 50px; /* Adjust padding as needed 
+    margin-top: 20px;
+    background-color: #313132; /* Blue background color 
+    color: #fff; /* White text color 
+    border: none; /* Remove border 
+    cursor: pointer; /* Change cursor to pointer on hover 
+    font-size: 50px;
+    font-family: 'ISOCTEUR', sans-serif;
+    transition: background-color 0.3s ease;
+
+  
+}
+input[type="submit"]:hover {
+    background-color: #000000; /* Darker blue background color on hover 
+}
+*/
+.choose{
+  font-size: 35px;
+  font-weight: 100;
+}
+
+.back{
+  filter:grayscale(100%)
+}
+.back:hover{
+  filter: grayscale(0);
+}
+
+
+
+
+input[type=file]::file-selector-button {
+  margin-right: 20px;
+  border: none;
+  font-family: 'ISOCTEUR', sans-serif;
+  font-weight: bold;
+  text-transform: uppercase;
+
+  background: #8c9292;
+  padding: 10px 20px;
+  border-radius: 5px;
+  color: #000000;
+  cursor: pointer;
+  transition: background .2s ease-in-out;
+}
+
+input[type=file]::file-selector-button:hover {
+  background: rgb(0, 255, 255);
+}
+
+.drop-container {
+  position: relative;
+  display: flex;
+  gap: 10px;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 200px;
+  width: 100%;
+  
+  border-radius: 10px;
+  border: 5px dashed #555;
+  color: #444;
+  cursor: pointer;
+  transition: background .2s ease-in-out, border .2s ease-in-out;
+}
+
+.drop-container:hover {
+  background: #000000;
+  border-color:aqua;
+  color: aqua;
+}
+
+.drop-container:hover .drop-title {
+  color: #222;
+}
+
+.drop-title {
+  color: #9c9292;
+  font-size: 20px;
+  font-weight: bold;
+  text-align: center;
+  transition: color .2s ease-in-out;
+}
