@@ -46,7 +46,7 @@ def submit():
    
     if request.method == 'POST':
       
-        df = pd.read_csv('dataset.csv', header=None, names = col_names)
+        df = pd.read_csv(file)
         
 
         with open('intrusion_detection_model.pkl', 'rb') as file:
