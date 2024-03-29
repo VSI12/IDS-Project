@@ -45,8 +45,17 @@ def submit():
     file.save("dataset.csv")
    
     if request.method == 'POST':
+
+        if file.filename == '':
+            return "Error: No file selected for upload"
+        
+        try:
+            df = pd.read_csv(file)
+        except pd.errors.EmptyDataError:
+            return "Error: Uploaded file is empty or contains no data"
       
-        df = pd.read_csv(file)
+        if df.empty:
+           return "Error: Uploaded file is empty or contains no data"
         
 
         with open('intrusion_detection_model.pkl', 'rb') as file:
