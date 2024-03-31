@@ -105,24 +105,30 @@ body {
 }
 
 
-/*
+
 input[type="submit"] {
-    padding: 50px 50px; /* Adjust padding as needed 
-    margin-top: 20px;
-    background-color: #313132; /* Blue background color 
-    color: #fff; /* White text color 
-    border: none; /* Remove border 
-    cursor: pointer; /* Change cursor to pointer on hover 
-    font-size: 50px;
+    padding: 10px 10px; 
+    
+
+    background: #8c9292;
+    padding: 10px 20px;
+    border-radius: 5px;
+    color: #000000;
+    background: #8c9292; 
+    border: none; 
+    cursor: pointer; 
+    font-size: 15px;
     font-family: 'ISOCTEUR', sans-serif;
     transition: background-color 0.3s ease;
-
+    font-weight: bold;
+    text-transform: uppercase;
+  
   
 }
 input[type="submit"]:hover {
-    background-color: #000000; /* Darker blue background color on hover 
+    background-color:aqua;
 }
-*/
+
 .choose{
   font-size: 35px;
   font-weight: 100;
@@ -156,6 +162,10 @@ input[type=file]::file-selector-button {
 input[type=file]::file-selector-button:hover {
   background: rgb(0, 255, 255);
 }
+
+/*input[type=submit]{
+  color: #444;
+}*/
 
 .drop-container {
   position: relative;
