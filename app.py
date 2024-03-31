@@ -13,6 +13,8 @@ from intrusion_detection import train_model
 from intrusion_detection import load_dataset, col_names, train_model
 import pickle
 
+model = pickle.load(open('intrusion_detection_model.pkl', 'rb'))
+
 app = Flask(__name__)
 app.config['SECRET_KEY']='supersecret'
 app.config['UPLOAD_FOLDER'] = 'static/files'
@@ -46,25 +48,35 @@ def submit():
    
     if request.method == 'POST':
 
+        #check for if file is empty
         if file.filename == '':
             return "Error: No file selected for upload"
         
+        #read the uploaded dataset
         try:
-            df = pd.read_csv(file)
+            df = pd.read_csv('dataset.csv', header=None, names=col_names)
         except pd.errors.EmptyDataError:
             return "Error: Uploaded file is empty or contains no data"
-      
-        if df.empty:
-           return "Error: Uploaded file is empty or contains no data"
         
-
+        #check is dataframe is empty
+        if df.empty:
+            return "Error: Uploaded file is empty"
+      
+        #load the trained model
         with open('intrusion_detection_model.pkl', 'rb') as file:
             clf = pickle.load(file)
-        predictions = clf.predict(df)
-        attack_count = sum(predictions)
-        # Redirect to result page or do whatever further processing is needed
-        return redirect(url_for('result.html'))
-  
+
+        #Check if 'label' column is present in the DataFrame
+        if 'label' not in df.columns:
+          return "Error: 'label' column not found in the uploaded file"
+
+        
+         #Perform prediction only on features (exclude 'label' column)
+       # features = df.drop(columns=['label'])
+
+        # Perform intrusion detection
+       # predictions = clf.predict(features)
+    
    
     
 
@@ -74,4 +86,4 @@ def submit():
 
 
 if __name__ == '__main__':
-    app.run()
+    app.run(port=5500)

@@ -79,21 +79,17 @@ def load_dataset():
         print('df[feature]')
 
         print(df[feature])
-
-
-    return df
-
-
+  
 def train_model():
     df = load_dataset()
 
     X = df.drop(columns=['label'])
     y = df['label']
-    
+
     print('x and y')
     print(X, y)
 
-    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=0)
 
     # Train RandomForestClassifier model
     clf = RandomForestClassifier()
@@ -109,4 +105,3 @@ def train_model():
         pickle.dump(clf, file)
 
 
-print(train_model())
