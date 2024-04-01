@@ -1,15 +1,27 @@
 import pandas as pd
+import numpy as np
+import seaborn as sns
+import imblearn
+import pickle
+import matplotlib
+import matplotlib.pyplot as plt
+
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler, LabelEncoder, OneHotEncoder
+from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import accuracy_score,classification_report
 from sklearn.tree import DecisionTreeClassifier 
-from sklearn.svm import SVC
-from sklearn.ensemble import RandomForestClassifier
-import pickle
 
+import warnings
+warnings.filterwarnings('ignore')
 
+np.set_printoptions(precision=3)
+sns.set_theme(style="darkgrid")
+plt.rcParams['axes.labelsize'] = 14
+plt.rcParams['xtick.labelsize'] = 12
+plt.rcParams['ytick.labelsize'] = 12
 
-
+#load the dataset
 train_url = 'NSL_KDD/NSL_KDD_Train.csv'
 test_url = 'NSL_KDD/NSL_KDD_Test.csv'
 
@@ -32,6 +44,7 @@ def load_dataset():
 
     df = pd.read_csv(train_url, header=None, names=col_names)
     df_test = pd.read_csv(test_url, header=None, names = col_names)
+   
 
     print('Dimensions of the Training set:', df.shape)
     print('Dimensions of the test set: ', df_test.shape)
@@ -39,6 +52,7 @@ def load_dataset():
     df.head()
 
     print(df.head(10))
+    print(df_test.head(10))
 
     print('Label distribution Training set:')
     print(df['label'].value_counts())
@@ -46,8 +60,11 @@ def load_dataset():
     print('Label distribution Test set:')
     print(df_test['label'].value_counts())
 
-    
+    #removing the num_outbound_cmds because it is a redundant column
+    df.drop(['num_outbound_cmds'], axis=1, inplace=True)
+    df_test.drop(['num_outbound_cmds'], axis=1, inplace=True)
 
+   
     print('Training set:')
     for col_name in df.columns:
      if df[col_name].dtypes == 'object' :
@@ -65,7 +82,6 @@ def load_dataset():
             print("Feature '{col_name}' has {unique_cat} categories".format(col_name=col_name, unique_cat=unique_cat))
 
 
-    categorical_columns=['protocol_type', 'service', 'flag']
 
     df_categorical_values = df[categorical_columns]
     testdf_categorical_values = df_test[categorical_columns]
