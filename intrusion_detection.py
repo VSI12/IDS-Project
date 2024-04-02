@@ -7,13 +7,14 @@ import matplotlib
 import matplotlib.pyplot as plt
 
 from sklearn.model_selection import train_test_split
-from sklearn.preprocessing import StandardScaler, LabelEncoder, OneHotEncoder
+from sklearn.preprocessing import StandardScaler, LabelEncoder, OneHotEncoder, label_binarize
 from sklearn.ensemble import RandomForestClassifier
-from sklearn.metrics import accuracy_score,classification_report
+from sklearn.metrics import accuracy_score,classification_report, confusion_matrix, roc_curve,auc
 from sklearn.tree import DecisionTreeClassifier 
 
 import warnings
 warnings.filterwarnings('ignore')
+
 
 np.set_printoptions(precision=3)
 sns.set_theme(style="darkgrid")
@@ -64,7 +65,9 @@ def load_dataset():
     df.drop(['num_outbound_cmds'], axis=1, inplace=True)
     df_test.drop(['num_outbound_cmds'], axis=1, inplace=True)
 
-   
+    #one-Hot encoding
+
+    #for Training set
     print('Training set:')
     for col_name in df.columns:
      if df[col_name].dtypes == 'object' :
@@ -74,7 +77,8 @@ def load_dataset():
     print()
     print('Distribution of categories in service:')
     print(df['service'].value_counts().sort_values(ascending=False).head())
-
+    
+    #for test set
     print('Test set:')
     for col_name in df_test.columns:
         if df_test[col_name].dtypes == 'object' :
@@ -82,27 +86,134 @@ def load_dataset():
             print("Feature '{col_name}' has {unique_cat} categories".format(col_name=col_name, unique_cat=unique_cat))
 
 
-
+   #labelEncoder: inserting the categorical features into a 2d numpy array
     df_categorical_values = df[categorical_columns]
     testdf_categorical_values = df_test[categorical_columns]
 
     df_categorical_values.head()
     print(df_categorical_values.head())
-    
+   
+
+
+   # protocol type
+    unique_protocol=sorted(df.protocol_type.unique())
+    string1 = 'Protocol_type_'
+    unique_protocol2=[string1 + x for x in unique_protocol]
+    print(unique_protocol2)
+
+    # service
+    unique_service=sorted(df.service.unique())
+    string2 = 'service_'
+    unique_service2=[string2 + x for x in unique_service]
+    print(unique_service2)
+
+
+    # flag
+    unique_flag=sorted(df.flag.unique())
+    string3 = 'flag_'
+    unique_flag2=[string3 + x for x in unique_flag]
+    print(unique_flag2)
+
+
+    # put together
+    dumcols=unique_protocol2 + unique_service2 + unique_flag2
+
+
+    #do it for test set
+    unique_service_test=sorted(df_test.service.unique())
+    unique_service2_test=[string2 + x for x in unique_service_test]
+    testdumcols=unique_protocol2 + unique_service2_test + unique_flag2
+
+    #transforming the categorical featurees into numbers using labelEncoders()
+
+    df_categorical_values_enc=df_categorical_values.apply(LabelEncoder().fit_transform)
+
+    print(df_categorical_values.head())
+    print('--------------------')
+    print(df_categorical_values_enc.head())
+
+    # test set
+    testdf_categorical_values_enc=testdf_categorical_values.apply(LabelEncoder().fit_transform)
+
+    #one-Hot Encoding
+    enc = OneHotEncoder(categories='auto')
+    df_categorical_values_encenc = enc.fit_transform(df_categorical_values_enc)
+    df_cat_data = pd.DataFrame(df_categorical_values_encenc.toarray(),columns=dumcols)
+
+
+    # test set
+    testdf_categorical_values_encenc = enc.fit_transform(testdf_categorical_values_enc)
+    testdf_cat_data = pd.DataFrame(testdf_categorical_values_encenc.toarray(),columns=testdumcols)
+
+    df_cat_data.head()
+    print(df_cat_data.head())
+
+
+    #Adding missing colums in the dataset
+    trainservice=df['service'].tolist()
+    testservice= df_test['service'].tolist()
+    difference=list(set(trainservice) - set(testservice))
+    string = 'service_'
+    difference=[string + x for x in difference]
+    difference
+
+
+    for col in difference:
+        testdf_cat_data[col] = 0
+
+    print(df_cat_data.shape)    
+    print(testdf_cat_data.shape)
+
+
+    #Adding new numeric columns to mian dataframe
+    newdf=df.join(df_cat_data)
+    newdf.drop('flag', axis=1, inplace=True)
+    newdf.drop('protocol_type', axis=1, inplace=True)
+    newdf.drop('service', axis=1, inplace=True)
+
+    # test data
+    newdf_test=df_test.join(testdf_cat_data)
+    newdf_test.drop('flag', axis=1, inplace=True)
+    newdf_test.drop('protocol_type', axis=1, inplace=True)
+    newdf_test.drop('service', axis=1, inplace=True)
+
+    print(newdf.shape)
+    print(newdf_test.shape)
+
+    #coverting the labels from strings to binary representations
+    labeldf=newdf['label']
+    labeldf_test=newdf_test['label']
+
+
+    # change the label column
+    newlabeldf=labeldf.replace({ 'normal' : 0, 'neptune' : 1 ,'back': 1, 'land': 1, 'pod': 1, 'smurf': 1, 'teardrop': 1,'mailbomb': 1, 'apache2': 1, 'processtable': 1, 'udpstorm': 1, 'worm': 1,
+                           'ipsweep' : 1,'nmap' : 1,'portsweep' : 1,'satan' : 1,'mscan' : 1,'saint' : 1,
+                            'ftp_write': 1,'guess_passwd': 1,'imap': 1,'multihop': 1,'phf': 1,'spy': 1,'warezclient': 1,'warezmaster': 1,'sendmail': 1,'named': 1,'snmpgetattack': 1,'snmpguess': 1,'xlock': 1,'xsnoop': 1,'httptunnel': 1,
+                           'buffer_overflow': 1,'loadmodule': 1,'perl': 1,'rootkit': 1,'ps': 1,'sqlattack': 1,'xterm': 1 })
+    newlabeldf_test=labeldf_test.replace({ 'normal' : 0, 'neptune' : 1 ,'back': 1, 'land': 1, 'pod': 1, 'smurf': 1, 'teardrop': 1,'mailbomb': 1, 'apache2': 1, 'processtable': 1, 'udpstorm': 1, 'worm': 1,
+                           'ipsweep' : 1,'nmap' : 1,'portsweep' : 1,'satan' : 1,'mscan' : 1,'saint' : 1
+                           ,'ftp_write': 1,'guess_passwd': 1,'imap': 1,'multihop': 1,'phf': 1,'spy': 1,'warezclient': 1,'warezmaster': 1,'sendmail': 1,'named': 1,'snmpgetattack': 1,'snmpguess': 1,'xlock': 1,'xsnoop': 1,'httptunnel': 1,
+                           'buffer_overflow': 1,'loadmodule': 1,'perl': 1,'rootkit': 1,'ps': 1,'sqlattack': 1,'xterm': 1})
+
+
+    # put the new label column back
+    newdf['label'] = newlabeldf
+    newdf_test['label'] = newlabeldf_test
+
+    newdf.head()
+    print(newdf.head())
+
+
     for feature in categorical_columns:
         le = LabelEncoder()
         df[feature] = le.fit_transform(df[feature])
 
-        print('df[feature]')
-
-        print(df[feature])
-
-
-    return df
+    print('df[feature]')
+    print(df[feature])
 
 
-def train_model():
-    df = load_dataset()
+
+
 
     X = df.drop(columns=['label'])
     y = df['label']
@@ -124,5 +235,6 @@ def train_model():
     with open('intrusion_detection_model.pkl', 'wb') as file:
         pickle.dump(clf, file)
 
+    return df
 
-print(train_model())
+print(load_dataset())
