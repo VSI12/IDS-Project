@@ -204,6 +204,16 @@ def load_dataset():
     print(newdf.head())
 
 
+    #FEATURE SCALING
+    #Splitting dataframes into X and Y
+    X_Df = newdf.drop('label',1)
+    Y_Df = newdf.label
+
+    # test set
+    X_Df_test = newdf_test.drop('label',1)
+    Y_Df_test = newdf_test.label
+
+
     for feature in categorical_columns:
         le = LabelEncoder()
         df[feature] = le.fit_transform(df[feature])
