@@ -5,7 +5,9 @@ import imblearn
 import pickle
 import matplotlib
 import matplotlib.pyplot as plt
+import time
 
+from sklearn import preprocessing
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler, LabelEncoder, OneHotEncoder, label_binarize
 from sklearn.ensemble import RandomForestClassifier
@@ -206,35 +208,43 @@ def load_dataset():
 
     #FEATURE SCALING
     #Splitting dataframes into X and Y
-    X_Df = newdf.drop('label',1)
+    X_Df = newdf.drop('label',axis=1)
     Y_Df = newdf.label
 
     # test set
-    X_Df_test = newdf_test.drop('label',1)
+    X_Df_test = newdf_test.drop('label',axis=1)
     Y_Df_test = newdf_test.label
 
+    colNames=list(X_Df)
+    colNames_test=list(X_Df_test)
 
-    for feature in categorical_columns:
+    scaler1 = preprocessing.StandardScaler().fit(X_Df)
+    X_Df=scaler1.transform(X_Df) 
+
+    # test data
+    scaler5 = preprocessing.StandardScaler().fit(X_Df_test)
+    X_Df_test=scaler5.transform(X_Df_test) 
+
+
+    print(X_Df.shape)
+    print(X_Df_test.shape)
+
+
+    ''' for feature in categorical_columns:
         le = LabelEncoder()
         df[feature] = le.fit_transform(df[feature])
 
     print('df[feature]')
     print(df[feature])
+    '''
 
 
 
+    X_train, X_test, y_train, y_test = train_test_split(X_Df, Y_Df, test_size=0.2, random_state=42)
 
-
-    X = df.drop(columns=['label'])
-    y = df['label']
-    print('x and y')
-    print(X, y)
-
-    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
-
-    # Train RandomForestClassifier model
+    # Train RandomForestClassifier mode
     clf = RandomForestClassifier()
-    clf.fit(X_train, y_train)
+    clf.fit(X_Df, Y_Df)
 
     # Evaluate model
     y_pred = clf.predict(X_test)
@@ -244,6 +254,25 @@ def load_dataset():
     # Save trained model
     with open('intrusion_detection_model.pkl', 'wb') as file:
         pickle.dump(clf, file)
+
+
+
+
+    #DECISION TREE CLASSIFIER
+    clf_Tree = DecisionTreeClassifier()
+    train0=time.time()
+    #traning DT
+    clf_Tree=clf_Tree.fit(X_Df,Y_Df.astype(int))
+    train1=time.time()-train0
+
+    test0=time.time()
+    Y_Df_pred=clf_Tree.predict(X_Df_test)
+    test1 = time.time() - test0
+
+    # Create confusion matrix
+    pd.crosstab(Y_Df_test, Y_Df_pred, rownames=['Actual attacks'], colnames=['Predicted attacks'])
+
+    print(pd.crosstab(Y_Df_test, Y_Df_pred, rownames=['Actual attacks'], colnames=['Predicted attacks']))
 
     return df
 
