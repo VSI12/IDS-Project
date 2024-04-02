@@ -7,7 +7,7 @@ import matplotlib
 import matplotlib.pyplot as plt
 import time
 
-from sklearn import preprocessing
+from sklearn import preprocessing,svm
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler, LabelEncoder, OneHotEncoder, label_binarize
 from sklearn.ensemble import RandomForestClassifier
@@ -244,12 +244,17 @@ def load_dataset():
 
     # Train RandomForestClassifier mode
     clf = RandomForestClassifier()
-    clf.fit(X_Df, Y_Df)
+    train_forest0=time.time()
+
+    clf.fit(X_Df, Y_Df.astype(int))
+    train_forest1 = time.time()-train_forest0
 
     # Evaluate model
     y_pred = clf.predict(X_test)
     accuracy = accuracy_score(y_test, y_pred)
     print(f'Accuracy: {accuracy}')
+    
+
 
     # Save trained model
     with open('intrusion_detection_model.pkl', 'wb') as file:
@@ -273,6 +278,33 @@ def load_dataset():
     pd.crosstab(Y_Df_test, Y_Df_pred, rownames=['Actual attacks'], colnames=['Predicted attacks'])
 
     print(pd.crosstab(Y_Df_test, Y_Df_pred, rownames=['Actual attacks'], colnames=['Predicted attacks']))
+
+
+    # Save trained model
+    with open('IDS_model_DECISION TREE CLASSIFIER.pkl', 'wb') as file:
+        pickle.dump(clf_Tree, file)
+
+    #SUPPORT VECTOR MACHINE
+    clf_svm= svm.SVC()
+    train_svm0=time.time()
+    #traning DT
+    clf_svm=clf_svm.fit(X_Df,Y_Df.astype(int))
+    train_svm1=time.time()-train_svm0
+
+    test_svm0=time.time()
+    Y_Df_pred_svm=clf_svm.predict(X_Df_test)
+    test_svm1 = time.time() - test_svm0
+
+    # Create confusion matrix
+    pd.crosstab(Y_Df_test, Y_Df_pred_svm, rownames=['Actual attacks'], colnames=['Predicted attacks'])
+
+    print('confusion matrix for SVM')
+    print(pd.crosstab(Y_Df_test, Y_Df_pred_svm, rownames=['Actual attacks'], colnames=['Predicted attacks']))
+
+
+    # Save trained model
+    with open('IDS_model_SUPPORT VECTOR MACHINE.pkl', 'wb') as file:
+        pickle.dump(clf_svm, file)
 
     return df
 
