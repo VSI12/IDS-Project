@@ -6,6 +6,7 @@ import pickle
 import matplotlib
 import matplotlib.pyplot as plt
 import time
+import logging
 
 from sklearn import preprocessing,svm,metrics
 from sklearn.model_selection import train_test_split, cross_val_score
@@ -44,10 +45,11 @@ col_names = ["duration","protocol_type","service","flag","src_bytes",
 
 #load nsl dataset and preprocess it
 def load_dataset():
-
-    df = pd.read_csv(train_url, header=None, names=col_names)
-    df_test = pd.read_csv(test_url, header=None, names = col_names)
-   
+    try:
+        df = pd.read_csv(train_url, header=None, names=col_names)
+        df_test = pd.read_csv(test_url, header=None, names = col_names)
+    except FileNotFoundError:
+        logging.error(f"File not found: NSL_KDD/NSL_KDD_Train.csv")
 
     print('Dimensions of the Training set:', df.shape)
     print('Dimensions of the test set: ', df_test.shape)
@@ -325,7 +327,7 @@ def load_dataset():
     test_svm1 = time.time() - test_svm0
 
 
-    accuracy = cross_val_score(clf_svm, X_Df_test, Y_Df_test, cv=10, scoring='accuracy')
+    '''accuracy = cross_val_score(clf_svm, X_Df_test, Y_Df_test, cv=10, scoring='accuracy')
     print("Accuracy: %0.5f (+/- %0.5f)" % (accuracy.mean(), accuracy.std() * 2))
     precision = cross_val_score(clf_svm, X_Df_test, Y_Df_test, cv=10, scoring='precision')
     print("Precision: %0.5f (+/- %0.5f)" % (precision.mean(), precision.std() * 2))
@@ -335,7 +337,7 @@ def load_dataset():
     print("F-measure: %0.5f (+/- %0.5f)" % (f.mean(), f.std() * 2))
     print("train_time:%.3fs\n" %train_svm1)
     print("test_time:%.3fs\n" %test_svm1)
-
+    '''
     # Create confusion matrix
     pd.crosstab(Y_Df_test, Y_Df_pred_svm, rownames=['Actual attacks'], colnames=['Predicted attacks'])
 

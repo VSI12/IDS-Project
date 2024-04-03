@@ -2,18 +2,15 @@ from flask import Flask, flash, render_template,request,redirect, url_for, jsoni
 import pandas as pd
 import matplotlib.pyplot as plt
 from sklearn.tree import DecisionTreeClassifier
-import matplotlib.pyplot as plt
 import io
 import base64
 from flask_wtf import FlaskForm
 from wtforms import FileField, SubmitField
 from werkzeug.utils import secure_filename
 import os
-from intrusion_detection import train_model
-from intrusion_detection import load_dataset, col_names, train_model
+from intrusion_detection import load_dataset, col_names
 import pickle
 
-model = pickle.load(open('intrusion_detection_model.pkl', 'rb'))
 
 app = Flask(__name__)
 app.config['SECRET_KEY']='supersecret'
