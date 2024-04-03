@@ -7,8 +7,8 @@ import matplotlib
 import matplotlib.pyplot as plt
 import time
 
-from sklearn import preprocessing,svm
-from sklearn.model_selection import train_test_split
+from sklearn import preprocessing,svm,metrics
+from sklearn.model_selection import train_test_split, cross_val_score
 from sklearn.preprocessing import StandardScaler, LabelEncoder, OneHotEncoder, label_binarize
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import accuracy_score,classification_report, confusion_matrix, roc_curve,auc
@@ -249,11 +249,27 @@ def load_dataset():
     clf.fit(X_Df, Y_Df.astype(int))
     train_forest1 = time.time()-train_forest0
 
+    test_forest0=time.time()
+    Y_Df_pred_forest=clf.predict(X_Df_test)
+    test_forest1 = time.time() - test_forest0
+
     # Evaluate model
     y_pred = clf.predict(X_test)
-    accuracy = accuracy_score(y_test, y_pred)
-    print(f'Accuracy: {accuracy}')
+    #accuracy = accuracy_score(y_test, y_pred)
+    #print(f'Accuracy: {accuracy}')
     
+
+
+    accuracy = cross_val_score(clf, X_Df_test, Y_Df_test, cv=10, scoring='accuracy')
+    print("Accuracy: %0.5f (+/- %0.5f)" % (accuracy.mean(), accuracy.std() * 2))
+    precision = cross_val_score(clf, X_Df_test, Y_Df_test, cv=10, scoring='precision')
+    print("Precision: %0.5f (+/- %0.5f)" % (precision.mean(), precision.std() * 2))
+    recall = cross_val_score(clf, X_Df_test, Y_Df_test, cv=10, scoring='recall')
+    print("Recall: %0.5f (+/- %0.5f)" % (recall.mean(), recall.std() * 2))
+    f = cross_val_score(clf, X_Df_test, Y_Df_test, cv=10, scoring='f1')
+    print("F-measure: %0.5f (+/- %0.5f)" % (f.mean(), f.std() * 2))
+    print("train_time:%.3fs\n" %train_forest1)
+    print("test_time:%.3fs\n" %test_forest1)
 
 
     # Save trained model
@@ -280,6 +296,19 @@ def load_dataset():
     print(pd.crosstab(Y_Df_test, Y_Df_pred, rownames=['Actual attacks'], colnames=['Predicted attacks']))
 
 
+
+    accuracy = cross_val_score(clf_Tree, X_Df_test, Y_Df_test, cv=10, scoring='accuracy')
+    print("Accuracy: %0.5f (+/- %0.5f)" % (accuracy.mean(), accuracy.std() * 2))
+    precision = cross_val_score(clf_Tree, X_Df_test, Y_Df_test, cv=10, scoring='precision')
+    print("Precision: %0.5f (+/- %0.5f)" % (precision.mean(), precision.std() * 2))
+    recall = cross_val_score(clf_Tree, X_Df_test, Y_Df_test, cv=10, scoring='recall')
+    print("Recall: %0.5f (+/- %0.5f)" % (recall.mean(), recall.std() * 2))
+    f = cross_val_score(clf_Tree, X_Df_test, Y_Df_test, cv=10, scoring='f1')
+    print("F-measure: %0.5f (+/- %0.5f)" % (f.mean(), f.std() * 2))
+    print("train_time:%.3fs\n" %train1)
+    print("test_time:%.3fs\n" %test1)
+
+
     # Save trained model
     with open('IDS_model_DECISION TREE CLASSIFIER.pkl', 'wb') as file:
         pickle.dump(clf_Tree, file)
@@ -295,6 +324,18 @@ def load_dataset():
     Y_Df_pred_svm=clf_svm.predict(X_Df_test)
     test_svm1 = time.time() - test_svm0
 
+
+    accuracy = cross_val_score(clf_svm, X_Df_test, Y_Df_test, cv=10, scoring='accuracy')
+    print("Accuracy: %0.5f (+/- %0.5f)" % (accuracy.mean(), accuracy.std() * 2))
+    precision = cross_val_score(clf_svm, X_Df_test, Y_Df_test, cv=10, scoring='precision')
+    print("Precision: %0.5f (+/- %0.5f)" % (precision.mean(), precision.std() * 2))
+    recall = cross_val_score(clf_svm, X_Df_test, Y_Df_test, cv=10, scoring='recall')
+    print("Recall: %0.5f (+/- %0.5f)" % (recall.mean(), recall.std() * 2))
+    f = cross_val_score(clf_svm, X_Df_test, Y_Df_test, cv=10, scoring='f1')
+    print("F-measure: %0.5f (+/- %0.5f)" % (f.mean(), f.std() * 2))
+    print("train_time:%.3fs\n" %train_svm1)
+    print("test_time:%.3fs\n" %test_svm1)
+
     # Create confusion matrix
     pd.crosstab(Y_Df_test, Y_Df_pred_svm, rownames=['Actual attacks'], colnames=['Predicted attacks'])
 
@@ -305,6 +346,11 @@ def load_dataset():
     # Save trained model
     with open('IDS_model_SUPPORT VECTOR MACHINE.pkl', 'wb') as file:
         pickle.dump(clf_svm, file)
+
+
+
+
+    
 
     return df
 
