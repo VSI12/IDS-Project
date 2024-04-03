@@ -8,14 +8,18 @@ from flask_wtf import FlaskForm
 from wtforms import FileField, SubmitField
 from werkzeug.utils import secure_filename
 import os
-from intrusion_detection import load_dataset, col_names
+from intrusion_detection import load_dataset, col_names,confusion_matrix
 import pickle
+import seaborn as sns
 
 
 app = Flask(__name__)
 app.config['SECRET_KEY']='supersecret'
 app.config['UPLOAD_FOLDER'] = 'static/files'
 app.debug = True
+
+
+route_accessed = {"upload_RandomForest": False, "upload_DecisionTree": False, "upload_SVM": False}
 
 
 class UploadFileForm(FlaskForm):
@@ -31,8 +35,27 @@ def home():
 def model():
     return render_template("model.html")
 
-@app.route("/upload")
-def upload():
+@app.route("/upload_RandomForest")
+def upload_RandomForest():
+
+    route_accessed["upload_RandomForest"] = True
+
+    form = UploadFileForm()
+    return render_template('upload.html', form=form)
+
+@app.route("/upload_DecisionTree")
+def upload_DecisionTree():
+
+    route_accessed["upload_DecisionTree"]=True
+
+    form = UploadFileForm()
+    return render_template('upload.html', form=form)
+
+@app.route("/upload_SVM")
+def upload_SVM():
+
+    route_accessed["upload_SVM"] = True
+
     form = UploadFileForm()
     return render_template('upload.html', form=form)
 
@@ -42,6 +65,8 @@ def submit():
     file = request.files['file']
     file_path = "/" + file.filename
     file.save("dataset.csv")
+
+
    
     if request.method == 'POST':
 
@@ -59,13 +84,49 @@ def submit():
         if df.empty:
             return "Error: Uploaded file is empty"
       
+        if route_accessed["upload_DecisionTree"] == True:
+
+            #load the trained model
+            with open('IDS_model_DECISION TREE CLASSIFIER.pkl', "rb") as file:
+                clf = pickle.load(file)
+
+           
+            # Save confusion matrix plot
+            plt.figure(figsize=(8, 6))
+            sns.heatmap(confusion_matrix, annot=True, fmt='d', cmap='Blues')
+            plt.title('Confusion Matrix')
+            plt.xlabel('Predicted Label')
+            plt.ylabel('True Label')
+            plt.tight_layout()
+            plt.savefig('confusion_matrix.png')
+
+            # Convert plot to base64 for display in HTML
+            with open('confusion_matrix.png', 'rb') as img_file:
+                img_base64 = base64.b64encode(img_file.read()).decode('utf-8')
+
+            os.remove(file)  # Remove uploaded file
+
+            return render_template('result.html', confusion_matrix=img_base64)
+
+
+        elif route_accessed["upload_RandomForest"] == True:
+
+             with open('intrusion_detection_model.pkl', "rb") as file:
+                clf = pickle.load(file)
+
+        else:
+
+            with open('IDS_model_SUPPORT VECTOR MACHINE.pkl', "rb") as file:
+                clf = pickle.load(file)
+
+
         #load the trained model
         with open('intrusion_detection_model.pkl', 'rb') as file:
             clf = pickle.load(file)
 
         #Check if 'label' column is present in the DataFrame
-        if 'label' not in df.columns:
-          return "Error: 'label' column not found in the uploaded file"
+     #   if 'label' not in df.columns:
+      #    return "Error: 'label' column not found in the uploaded file"
 
         
          #Perform prediction only on features (exclude 'label' column)
@@ -83,4 +144,4 @@ def submit():
 
 
 if __name__ == '__main__':
-    app.run(port=5500)
+    app.run(port=6500)

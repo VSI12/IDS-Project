@@ -293,7 +293,7 @@ def load_dataset():
     test1 = time.time() - test0
 
     # Create confusion matrix
-    pd.crosstab(Y_Df_test, Y_Df_pred, rownames=['Actual attacks'], colnames=['Predicted attacks'])
+    confusion_matrix=pd.crosstab(Y_Df_test, Y_Df_pred, rownames=['Actual attacks'], colnames=['Predicted attacks'])
 
     print(pd.crosstab(Y_Df_test, Y_Df_pred, rownames=['Actual attacks'], colnames=['Predicted attacks']))
 
@@ -315,7 +315,7 @@ def load_dataset():
     with open('IDS_model_DECISION TREE CLASSIFIER.pkl', 'wb') as file:
         pickle.dump(clf_Tree, file)
 
-    #SUPPORT VECTOR MACHINE
+    ''' #SUPPORT VECTOR MACHINE
     clf_svm= svm.SVC()
     train_svm0=time.time()
     #traning DT
@@ -327,7 +327,7 @@ def load_dataset():
     test_svm1 = time.time() - test_svm0
 
 
-    '''accuracy = cross_val_score(clf_svm, X_Df_test, Y_Df_test, cv=10, scoring='accuracy')
+    accuracy = cross_val_score(clf_svm, X_Df_test, Y_Df_test, cv=10, scoring='accuracy')
     print("Accuracy: %0.5f (+/- %0.5f)" % (accuracy.mean(), accuracy.std() * 2))
     precision = cross_val_score(clf_svm, X_Df_test, Y_Df_test, cv=10, scoring='precision')
     print("Precision: %0.5f (+/- %0.5f)" % (precision.mean(), precision.std() * 2))
@@ -337,7 +337,7 @@ def load_dataset():
     print("F-measure: %0.5f (+/- %0.5f)" % (f.mean(), f.std() * 2))
     print("train_time:%.3fs\n" %train_svm1)
     print("test_time:%.3fs\n" %test_svm1)
-    '''
+    
     # Create confusion matrix
     pd.crosstab(Y_Df_test, Y_Df_pred_svm, rownames=['Actual attacks'], colnames=['Predicted attacks'])
 
@@ -349,7 +349,7 @@ def load_dataset():
     with open('IDS_model_SUPPORT VECTOR MACHINE.pkl', 'wb') as file:
         pickle.dump(clf_svm, file)
 
-
+    '''
 
 
     
