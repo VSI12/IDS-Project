@@ -45,6 +45,7 @@ col_names = ["duration","protocol_type","service","flag","src_bytes",
 
 #load nsl dataset and preprocess it
 def load_dataset():
+    global confusion_matrix1, confusion_matrix2
     try:
         df = pd.read_csv(train_url, header=None, names=col_names)
         df_test = pd.read_csv(test_url, header=None, names = col_names)
@@ -244,7 +245,7 @@ def load_dataset():
 
     X_train, X_test, y_train, y_test = train_test_split(X_Df, Y_Df, test_size=0.2, random_state=42)
 
-    # Train RandomForestClassifier mode
+    ''' # Train RandomForestClassifier mode
     clf = RandomForestClassifier()
     train_forest0=time.time()
 
@@ -259,7 +260,7 @@ def load_dataset():
     y_pred = clf.predict(X_test)
     #accuracy = accuracy_score(y_test, y_pred)
     #print(f'Accuracy: {accuracy}')
-    
+   
 
 
     accuracy = cross_val_score(clf, X_Df_test, Y_Df_test, cv=10, scoring='accuracy')
@@ -277,7 +278,7 @@ def load_dataset():
     # Save trained model
     with open('intrusion_detection_model.pkl', 'wb') as file:
         pickle.dump(clf, file)
-
+'''
 
 
 
@@ -293,10 +294,13 @@ def load_dataset():
     test1 = time.time() - test0
 
     # Create confusion matrix
-    confusion_matrix=pd.crosstab(Y_Df_test, Y_Df_pred, rownames=['Actual attacks'], colnames=['Predicted attacks'])
+    confusion_matrix1=pd.crosstab(Y_Df_test, Y_Df_pred, rownames=['Actual attacks'], colnames=['Predicted attacks'])
+    print(confusion_matrix1.shape)
+    confusion_matrix2=confusion_matrix(Y_Df_test,Y_Df_pred)
 
+    print(confusion_matrix2.shape)
     print(pd.crosstab(Y_Df_test, Y_Df_pred, rownames=['Actual attacks'], colnames=['Predicted attacks']))
-
+    
 
 
     accuracy = cross_val_score(clf_Tree, X_Df_test, Y_Df_test, cv=10, scoring='accuracy')
