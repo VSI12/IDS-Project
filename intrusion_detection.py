@@ -14,6 +14,7 @@ from sklearn.preprocessing import StandardScaler, LabelEncoder, OneHotEncoder, l
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import accuracy_score,classification_report, confusion_matrix, roc_curve,auc
 from sklearn.tree import DecisionTreeClassifier 
+from sklearn. neighbors import KNeighborsClassifier
 
 import warnings
 warnings.filterwarnings('ignore')
@@ -45,7 +46,8 @@ col_names = ["duration","protocol_type","service","flag","src_bytes",
 
 #load nsl dataset and preprocess it
 def load_dataset():
-    global confusion_matrix1, confusion_matrix2
+    global confusion_matrixDecisionTreeClassifier, confusion_matrix2
+    global X_Df, Y_Df, X_Df_test, Y_Df_test
     try:
         df = pd.read_csv(train_url, header=None, names=col_names)
         df_test = pd.read_csv(test_url, header=None, names = col_names)
@@ -294,11 +296,9 @@ def load_dataset():
     test1 = time.time() - test0
 
     # Create confusion matrix
-    confusion_matrix1=pd.crosstab(Y_Df_test, Y_Df_pred, rownames=['Actual attacks'], colnames=['Predicted attacks'])
-    print(confusion_matrix1.shape)
-    confusion_matrix2=confusion_matrix(Y_Df_test,Y_Df_pred)
-
-    print(confusion_matrix2.shape)
+    confusion_matrixDecisionTreeClassifier=pd.crosstab(Y_Df_test, Y_Df_pred, rownames=['Actual attacks'], colnames=['Predicted attacks'])
+    print(confusion_matrixDecisionTreeClassifier.shape)
+    
     print(pd.crosstab(Y_Df_test, Y_Df_pred, rownames=['Actual attacks'], colnames=['Predicted attacks']))
     
 
@@ -318,6 +318,11 @@ def load_dataset():
     # Save trained model
     with open('IDS_model_DECISION TREE CLASSIFIER.pkl', 'wb') as file:
         pickle.dump(clf_Tree, file)
+
+
+    #K-NEAREST NEIGHBOUR
+
+
 
     ''' #SUPPORT VECTOR MACHINE
     clf_svm= svm.SVC()
@@ -360,4 +365,40 @@ def load_dataset():
 
     return df
 
-print(load_dataset())
+#print(load_dataset())
+
+
+#K-NEAREST NEIGHBOUR
+def KNN():
+    load_dataset()
+    global confusion_matrixKNN
+
+    clf_KNN = KNeighborsClassifier()
+    train0 = time.time()
+    clf_KNN.fit(X_Df, Y_Df.astype(int))
+    train1 = time.time() - train0
+
+    #for the test dataset
+    test0 = time.time()
+    Y_pred = clf_KNN.predict((X_Df_test))
+    test1 = time.time() - test0
+
+    #confusion matrix
+    confusion_matrixKNN = pd.crosstab(Y_Df_test, Y_pred, rownames=['Actual attacks'], colnames=['Predicted attacks'])
+
+    #accuracy, precision, f-measure and train time scores
+    accuracy = cross_val_score(clf_KNN, X_Df_test, Y_Df_test, cv=10, scoring='accuracy')
+    print("Accuracy: %0.5f (+/- %0.5f)" % (accuracy.mean(), accuracy.std() * 2))
+    precision = cross_val_score(clf_KNN, X_Df_test, Y_Df_test, cv=10, scoring='precision')
+    print("Precision: %0.5f (+/- %0.5f)" % (precision.mean(), precision.std() * 2))
+    recall = cross_val_score(clf_KNN, X_Df_test, Y_Df_test, cv=10, scoring='recall')
+    print("Recall: %0.5f (+/- %0.5f)" % (recall.mean(), recall.std() * 2))
+    f = cross_val_score(clf_KNN, X_Df_test, Y_Df_test, cv=10, scoring='f1')
+    print("F-measure: %0.5f (+/- %0.5f)" % (f.mean(), f.std() * 2))
+    print("train_time:%.3fs\n" %train1)
+    print("test_time:%.3fs\n" %test1)
+
+    return confusion_matrixKNN
+
+print(KNN())
+

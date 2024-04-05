@@ -1,17 +1,19 @@
-from flask import Flask, flash, render_template,request,redirect, url_for, jsonify
-import pandas as pd
-import matplotlib.pyplot as plt
-from sklearn.tree import DecisionTreeClassifier
 import io
 import base64
+import pandas as pd
+import os
+import pickle
+import seaborn as sns
+import matplotlib.pyplot as plt
+
+
+from flask import Flask, flash, render_template,request,redirect, url_for, jsonify
+from sklearn.tree import DecisionTreeClassifier
 from flask_wtf import FlaskForm
 from wtforms import FileField, SubmitField
 from werkzeug.utils import secure_filename
-import os
-from intrusion_detection import confusion_matrix1,confusion_matrix2
+from intrusion_detection import confusion_matrixDecisionTreeClassifier,confusion_matrixKNN
 from intrusion_detection import load_dataset, col_names,confusion_matrix
-import pickle
-import seaborn as sns
 
 
 app = Flask(__name__)
@@ -94,7 +96,7 @@ def submit():
            
             # Save confusion matrix plot
             plt.figure(figsize=(8, 6))
-            sns.heatmap(confusion_matrix1, annot=True, fmt='d', cmap='Blues')
+            sns.heatmap(confusion_matrixDecisionTreeClassifier, annot=True, fmt='d', cmap='Blues')
             plt.title('Confusion Matrix')
             plt.xlabel('Predicted Label')
             plt.ylabel('True Label')
@@ -114,6 +116,25 @@ def submit():
 
              with open('intrusion_detection_model.pkl', "rb") as file:
                 clf = pickle.load(file)
+
+                 # Save confusion matrix plot
+                plt.figure(figsize=(8, 6))
+                sns.heatmap(confusion_matrixKNN, annot=True, fmt='d', cmap='Blues')
+                plt.title('Confusion Matrix')
+                plt.xlabel('Predicted Label')
+                plt.ylabel('True Label')
+                #plt.tight_layout()
+                plt.savefig('confusion_matrix.png')
+
+                # Convert plot to base64 for display in HTML
+                with open('confusion_matrix.png', 'rb') as img_file:
+                    img_base64 = base64.b64encode(img_file.read()).decode('utf-8')
+
+                
+
+                return render_template('result.html', confusion_matrix=img_base64)
+
+
 
         else:
 
