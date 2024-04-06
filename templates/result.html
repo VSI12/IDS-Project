@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Upload DataSet</title>
     <link rel="icon" type="image/x-icon" href="static/CSS/images/file.png">
-    <link rel="stylesheet" type="text/css" href="static/CSS/upload.css"> 
+    <link rel="stylesheet" type="text/css" href="static/CSS/results.css"> 
     <link href="https://fonts.cdnfonts.com/css/isocteur" rel="stylesheet">
     <style>
         @import url('https://fonts.cdnfonts.com/css/isocteur');
@@ -18,11 +18,11 @@
       <div class="black-container">
         <section class="black-section">
          <div class="black">
-           <a href="/model" id="image-link">
+           <a href="#" id="image-link">
                <img src="static/CSS/images/back cyan.png" alt="" class="back" id="back">
             </a>
            <div class="text">
-             UPLOAD YOUR DATASET FOR TESTING
+             RESULTS
            </div>
          </div>
         </section>
@@ -32,7 +32,7 @@
               <div class="text_under">
                result
               </div>
-            
+
               <div>
                 <img src="data:image/png;base64,{{ confusion_matrix }}" alt="Confusion Matrix">
             </div>
@@ -40,5 +40,6 @@
           
       </section>
     </div>
+    <script src="../static/JavaScript/results.js"></script>
 </body>
 </html>
