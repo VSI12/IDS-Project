@@ -285,6 +285,11 @@ def load_dataset():
 
 
     #DECISION TREE CLASSIFIER
+def DecisionTree():
+    load_dataset()
+    global confusion_matrixDecisionTreeClassifier
+
+    #DECISION TREE CLASSIFIER
     clf_Tree = DecisionTreeClassifier()
     train0=time.time()
     #traning DT
@@ -301,8 +306,7 @@ def load_dataset():
     
     print(pd.crosstab(Y_Df_test, Y_Df_pred, rownames=['Actual attacks'], colnames=['Predicted attacks']))
     
-
-
+    #accuracy, precision, f-measure and train time scores
     accuracy = cross_val_score(clf_Tree, X_Df_test, Y_Df_test, cv=10, scoring='accuracy')
     print("Accuracy: %0.5f (+/- %0.5f)" % (accuracy.mean(), accuracy.std() * 2))
     precision = cross_val_score(clf_Tree, X_Df_test, Y_Df_test, cv=10, scoring='precision')
@@ -318,13 +322,16 @@ def load_dataset():
     # Save trained model
     with open('IDS_model_DECISION TREE CLASSIFIER.pkl', 'wb') as file:
         pickle.dump(clf_Tree, file)
-
-
+    return confusion_matrixDecisionTreeClassifier
+DecisionTree()
     #K-NEAREST NEIGHBOUR
 
+    
+def SVM():
 
+    global confusion_matrixSVM
 
-    ''' #SUPPORT VECTOR MACHINE
+    #SUPPORT VECTOR MACHINE
     clf_svm= svm.SVC()
     train_svm0=time.time()
     #traning DT
@@ -339,7 +346,7 @@ def load_dataset():
     accuracy = cross_val_score(clf_svm, X_Df_test, Y_Df_test, cv=10, scoring='accuracy')
     print("Accuracy: %0.5f (+/- %0.5f)" % (accuracy.mean(), accuracy.std() * 2))
     precision = cross_val_score(clf_svm, X_Df_test, Y_Df_test, cv=10, scoring='precision')
-    print("Precision: %0.5f (+/- %0.5f)" % (precision.mean(), precision.std() * 2))
+    print("Precision: %0.5f (+/- %0.5fS)" % (precision.mean(), precision.std() * 2))
     recall = cross_val_score(clf_svm, X_Df_test, Y_Df_test, cv=10, scoring='recall')
     print("Recall: %0.5f (+/- %0.5f)" % (recall.mean(), recall.std() * 2))
     f = cross_val_score(clf_svm, X_Df_test, Y_Df_test, cv=10, scoring='f1')
@@ -348,25 +355,19 @@ def load_dataset():
     print("test_time:%.3fs\n" %test_svm1)
     
     # Create confusion matrix
-    pd.crosstab(Y_Df_test, Y_Df_pred_svm, rownames=['Actual attacks'], colnames=['Predicted attacks'])
+    confusion_matrixSVM = pd.crosstab(Y_Df_test, Y_Df_pred_svm, rownames=['Actual attacks'], colnames=['Predicted attacks'])
 
     print('confusion matrix for SVM')
     print(pd.crosstab(Y_Df_test, Y_Df_pred_svm, rownames=['Actual attacks'], colnames=['Predicted attacks']))
 
 
     # Save trained model
-    with open('IDS_model_SUPPORT VECTOR MACHINE.pkl', 'wb') as file:
+    with open('IDS_model_SVM.pkl', 'wb') as file:
         pickle.dump(clf_svm, file)
+    return confusion_matrixSVM
 
-    '''
-
-
+SVM()
     
-
-    return df
-
-#print(load_dataset())
-
 
 #K-NEAREST NEIGHBOUR
 def KNN():
@@ -398,7 +399,118 @@ def KNN():
     print("train_time:%.3fs\n" %train1)
     print("test_time:%.3fs\n" %test1)
 
+     # Save trained model
+    with open('IDS_model_KNN.pkl', 'wb') as file:
+        pickle.dump(clf_KNN, file)
     return confusion_matrixKNN
 
 print(KNN())
 
+
+def preprocess_dataset():
+        global X_Df_Preprocessed
+       #read the uploaded dataset
+        try:
+            df = pd.read_csv('dataset.csv', header=None, names=col_names)
+        except pd.errors.EmptyDataError:
+            return "Error: Uploaded file is empty or contains no data"
+        
+        #check is dataframe is empty
+        if df.empty:
+            return "Error: Uploaded file is empty"
+
+        df.head()
+
+        #removing the num_outbound_cmds because it is a redundant column
+        df.drop(['num_outbound_cmds'], axis=1, inplace=True)
+
+
+        #one-Hot encoding
+
+        print('Training set:')
+        for col_name in df.columns:
+            if df[col_name].dtypes == 'object' :
+                unique_cat = len(df[col_name].unique())
+                print("Feature '{col_name}' has {unique_cat} categories".format(col_name=col_name, unique_cat=unique_cat))
+
+        #labelEncoder: inserting the categorical features into a 2d numpy array
+        df_categorical_values = df[categorical_columns]
+
+        # protocol type
+        unique_protocol=sorted(df.protocol_type.unique())
+        string1 = 'Protocol_type_'
+        unique_protocol2=[string1 + x for x in unique_protocol]
+        print(unique_protocol2)
+
+        # service
+        unique_service=sorted(df.service.unique())
+        string2 = 'service_'
+        unique_service2=[string2 + x for x in unique_service]
+        print(unique_service2)
+
+
+        # flag
+        unique_flag=sorted(df.flag.unique())
+        string3 = 'flag_'
+        unique_flag2=[string3 + x for x in unique_flag]
+        print(unique_flag2)
+
+
+        # put together
+        dumcols=unique_protocol2 + unique_service2 + unique_flag2
+
+         #transforming the categorical featurees into numbers using labelEncoders()
+
+        df_categorical_values_enc=df_categorical_values.apply(LabelEncoder().fit_transform)
+
+        #one-Hot Encoding
+        enc = OneHotEncoder(categories='auto')
+        df_categorical_values_encenc = enc.fit_transform(df_categorical_values_enc)
+        df_cat_data = pd.DataFrame(df_categorical_values_encenc.toarray(),columns=dumcols)
+
+        #Adding missing colums in the dataset
+        trainservice=df['service'].tolist()
+
+        difference=list(set(trainservice))
+        string = 'service_'
+        difference=[string + x for x in difference]
+        difference
+
+        #Adding new numeric columns to mian dataframe
+        newdf=df.join(df_cat_data)
+        newdf.drop('flag', axis=1, inplace=True)
+        newdf.drop('protocol_type', axis=1, inplace=True)
+        newdf.drop('service', axis=1, inplace=True)
+
+
+         #coverting the labels from strings to binary representations
+        labeldf=newdf['label']
+
+        # change the label column
+        newlabeldf=labeldf.replace({ 'normal' : 0, 'neptune' : 1 ,'back': 1, 'land': 1, 'pod': 1, 'smurf': 1, 'teardrop': 1,'mailbomb': 1, 'apache2': 1, 'processtable': 1, 'udpstorm': 1, 'worm': 1,
+                           'ipsweep' : 1,'nmap' : 1,'portsweep' : 1,'satan' : 1,'mscan' : 1,'saint' : 1,
+                            'ftp_write': 1,'guess_passwd': 1,'imap': 1,'multihop': 1,'phf': 1,'spy': 1,'warezclient': 1,'warezmaster': 1,'sendmail': 1,'named': 1,'snmpgetattack': 1,'snmpguess': 1,'xlock': 1,'xsnoop': 1,'httptunnel': 1,
+                           'buffer_overflow': 1,'loadmodule': 1,'perl': 1,'rootkit': 1,'ps': 1,'sqlattack': 1,'xterm': 1 })
+  
+         # put the new label column back
+        newdf['label'] = newlabeldf
+
+        #FEATURE SCALING
+        #Splitting dataframes into X and Y
+        X_Df = newdf.drop('label',axis=1)
+        Y_Df = newdf.label
+
+        colNames=list(X_Df)
+
+        scaler1 = preprocessing.StandardScaler().fit(X_Df)
+        X_Df_Preprocessed=scaler1.transform(X_Df) 
+
+
+        print('second XDF')
+       # print(X_Df)
+        print(X_Df_Preprocessed.shape)
+        print(X_Df.shape)
+
+        return X_Df_Preprocessed
+
+preprocess_dataset()

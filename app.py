@@ -6,14 +6,15 @@ import pickle
 import seaborn as sns
 import matplotlib.pyplot as plt
 
-
+from sklearn import preprocessing
 from flask import Flask, flash, render_template,request,redirect, url_for, jsonify
 from sklearn.tree import DecisionTreeClassifier
+from sklearn.preprocessing import LabelEncoder,OneHotEncoder,StandardScaler
 from flask_wtf import FlaskForm
 from wtforms import FileField, SubmitField
 from werkzeug.utils import secure_filename
-from intrusion_detection import confusion_matrixDecisionTreeClassifier,confusion_matrixKNN
-from intrusion_detection import load_dataset, col_names,confusion_matrix
+from intrusion_detection import confusion_matrixDecisionTreeClassifier,confusion_matrixKNN,X_Df_Preprocessed
+from intrusion_detection import load_dataset, col_names,confusion_matrix,categorical_columns
 
 
 app = Flask(__name__)
@@ -22,7 +23,7 @@ app.config['UPLOAD_FOLDER'] = 'static/files'
 app.debug = True
 
 
-route_accessed = {"upload_RandomForest": False, "upload_DecisionTree": False, "upload_SVM": False}
+route_accessed = {"upload_KNN": False, "upload_DecisionTree": False, "upload_SVM": False}
 
 
 class UploadFileForm(FlaskForm):
@@ -38,27 +39,21 @@ def home():
 def model():
     return render_template("model.html")
 
-@app.route("/upload_RandomForest")
-def upload_RandomForest():
-
-    route_accessed["upload_RandomForest"] = True
-
+@app.route("/upload_KNN")
+def upload_KNN():
+    route_accessed["upload_KNN"] = True
     form = UploadFileForm()
     return render_template('upload.html', form=form)
 
 @app.route("/upload_DecisionTree")
 def upload_DecisionTree():
-
     route_accessed["upload_DecisionTree"]=True
-
     form = UploadFileForm()
     return render_template('upload.html', form=form)
 
 @app.route("/upload_SVM")
 def upload_SVM():
-
     route_accessed["upload_SVM"] = True
-
     form = UploadFileForm()
     return render_template('upload.html', form=form)
 
@@ -72,7 +67,6 @@ def submit():
 
    
     if request.method == 'POST':
-
         #check for if file is empty
         if file.filename == '':
             return "Error: No file selected for upload"
@@ -87,13 +81,13 @@ def submit():
         if df.empty:
             return "Error: Uploaded file is empty"
       
-        if route_accessed["upload_DecisionTree"] == True:
 
+
+        if route_accessed["upload_DecisionTree"] == True:
             #load the trained model
             with open('IDS_model_DECISION TREE CLASSIFIER.pkl', "rb") as file:
                 clf = pickle.load(file)
 
-           
             # Save confusion matrix plot
             plt.figure(figsize=(8, 6))
             sns.heatmap(confusion_matrixDecisionTreeClassifier, annot=True, fmt='d', cmap='Blues')
@@ -107,14 +101,13 @@ def submit():
             with open('confusion_matrix.png', 'rb') as img_file:
                 img_base64 = base64.b64encode(img_file.read()).decode('utf-8')
 
-            os.remove('file')  # Remove uploaded file
 
             return render_template('result.html', confusion_matrix=img_base64)
 
 
-        elif route_accessed["upload_RandomForest"] == True:
-
-             with open('intrusion_detection_model.pkl', "rb") as file:
+        elif route_accessed["upload_KNN"] == True:
+            #load the trained model
+             with open('IDS_model_KNN.pkl', "rb") as file:
                 clf = pickle.load(file)
 
                  # Save confusion matrix plot
@@ -137,14 +130,25 @@ def submit():
 
 
         else:
-
-            with open('IDS_model_SUPPORT VECTOR MACHINE.pkl', "rb") as file:
+            #load the trained model
+            with open('IDS_model_SVM.pkl', "rb") as file:
                 clf = pickle.load(file)
 
 
-        #load the trained model
-        with open('intrusion_detection_model.pkl', 'rb') as file:
-            clf = pickle.load(file)
+                predictions = clf.predict(X_Df_Preprocessed)
+                # Save confusion matrix plot
+                plt.figure(figsize=(8, 6))
+                #sns.heatmap(confusion_matrixSVM, annot=True, fmt='d', cmap='Blues')
+                plt.title('Confusion Matrix')
+                plt.xlabel('Predicted Label')
+                plt.ylabel('True Label')
+                #plt.tight_layout()
+                plt.savefig('confusion_matrixSVM.png')
+
+                # Convert plot to base64 for display in HTML
+                with open('confusion_matrixSVM.png', 'rb') as img_file:
+                    img_base64 = base64.b64encode(img_file.read()).decode('utf-8')
+
 
         #Check if 'label' column is present in the DataFrame
      #   if 'label' not in df.columns:
