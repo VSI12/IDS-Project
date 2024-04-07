@@ -52,7 +52,7 @@ def preprocess_dataset():
     print(y.shape)
 
 
-    # Split the dataset into training and testing sets (80% training, 20% testing)
+    # Split the dataset into training and testing sets (80% training, 20% testing) without labels
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
     # Optionally, you can save the split datasets to CSV files
@@ -60,5 +60,7 @@ def preprocess_dataset():
     X_test.to_csv('NSL-KDD 2/test_data.csv', index=False)
     y_train.to_csv('NSL-KDD 2/train_labels.csv', index=False)
     y_test.to_csv('NSL-KDD 2/test_labels.csv', index=False)
+
+  
 
 preprocess_dataset()
