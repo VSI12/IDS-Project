@@ -27,8 +27,8 @@ plt.rcParams['xtick.labelsize'] = 12
 plt.rcParams['ytick.labelsize'] = 12
 
 #load the dataset
-train_url = 'NSL_KDD/NSL_KDD_Train.csv'
-test_url = 'NSL_KDD/NSL_KDD_Test.csv'
+train_url = 'NSL-KDD 2/train_data.csv'
+test_url = 'NSL-KDD 2/test_data.csv'
 
 
 categorical_columns=['protocol_type', 'service', 'flag']
