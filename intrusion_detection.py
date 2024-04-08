@@ -28,7 +28,7 @@ plt.rcParams['ytick.labelsize'] = 12
 
 #load the dataset
 train_url = 'NSL-KDD 2/train_data.csv'
-test_url = 'NSL-KDD 2/test_data.csv'
+test_url = 'dataset.csv'
 
 
 categorical_columns=['protocol_type', 'service', 'flag']
@@ -45,7 +45,7 @@ col_names = ["duration","protocol_type","service","flag","src_bytes",
 
 
 #load nsl dataset and preprocess it
-def load_dataset():
+def load_dataset(test_url):
     global confusion_matrixDecisionTreeClassifier, confusion_matrix2
     global X_Df, Y_Df, X_Df_test, Y_Df_test
     try:
@@ -282,11 +282,13 @@ def load_dataset():
         pickle.dump(clf, file)
 '''
 
+    return 0
 
+load_dataset(test_url)
 
-    #DECISION TREE CLASSIFIER
+#DECISION TREE CLASSIFIER
 def DecisionTree():
-    load_dataset()
+
     global confusion_matrixDecisionTreeClassifier
 
     #DECISION TREE CLASSIFIER
@@ -370,7 +372,6 @@ SVM()'''
 
 #K-NEAREST NEIGHBOUR
 def KNN():
-    load_dataset()
     global confusion_matrixKNN
 
     clf_KNN = KNeighborsClassifier()
@@ -404,3 +405,31 @@ def KNN():
     return confusion_matrixKNN
 KNN()
 
+#make function for the datasets df and call it up to that point
+def preprocess(df):
+     #Drop redundant column
+    df.drop(['num_outbound_cmds'], axis=1, inplace=True)
+
+    # One-hot encoding for categorical columns
+    df_categorical_values = df[categorical_columns]
+    df_categorical_values_enc = pd.get_dummies(df_categorical_values)
+
+    # Drop original categorical columns and concatenate one-hot encoded columns
+    df = pd.concat([df, df_categorical_values_enc], axis=1)
+    df.drop(categorical_columns, axis=1, inplace=True)
+
+    # Convert labels to binary representations
+    label_encoder = LabelEncoder()
+    df['label'] = label_encoder.fit_transform(df['label'])
+
+    # Split features and labels
+    X = df.drop('label', axis=1)
+    y = df['label']
+
+    # Scale features
+    scaler = StandardScaler()
+    X_scaled = scaler.fit_transform(X)
+    
+    return X_scaled, y
+df_test = pd.read_csv(test_url, header=None, names = col_names)
+preprocess(df_test)

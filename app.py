@@ -13,9 +13,6 @@ from sklearn.preprocessing import LabelEncoder,OneHotEncoder,StandardScaler
 from flask_wtf import FlaskForm
 from wtforms import FileField, SubmitField
 from werkzeug.utils import secure_filename
-from intrusion_detection import confusion_matrixDecisionTreeClassifier,confusion_matrixKNN
-from intrusion_detection import load_dataset, col_names,confusion_matrix,categorical_columns
-
 
 app = Flask(__name__)
 app.config['SECRET_KEY']='supersecret'
@@ -63,6 +60,9 @@ def submit():
     file = request.files['file']
     file_path = "/" + file.filename
     file.save("dataset.csv")
+    from intrusion_detection import confusion_matrixDecisionTreeClassifier,confusion_matrixKNN
+    from intrusion_detection import load_dataset, col_names,confusion_matrix,categorical_columns
+
 
 
    
@@ -109,7 +109,7 @@ def submit():
             with open('confusion_matrixDecisionTree.png', 'rb') as img_file:
                 img_base64 = base64.b64encode(img_file.read()).decode('utf-8')
 
-
+            os.remove('dataset.csv')  # Remove uploaded file
             return render_template('result.html', confusion_matrix=img_base64)
 
 
