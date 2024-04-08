@@ -13,7 +13,7 @@ from sklearn.preprocessing import LabelEncoder,OneHotEncoder,StandardScaler
 from flask_wtf import FlaskForm
 from wtforms import FileField, SubmitField
 from werkzeug.utils import secure_filename
-from intrusion_detection import confusion_matrixDecisionTreeClassifier,confusion_matrixKNN,X_Df_Preprocessed
+from intrusion_detection import confusion_matrixDecisionTreeClassifier,confusion_matrixKNN
 from intrusion_detection import load_dataset, col_names,confusion_matrix,categorical_columns
 
 
@@ -80,13 +80,21 @@ def submit():
         #check is dataframe is empty
         if df.empty:
             return "Error: Uploaded file is empty"
-      
+        
 
 
         if route_accessed["upload_DecisionTree"] == True:
             #load the trained model
             with open('IDS_model_DECISION TREE CLASSIFIER.pkl', "rb") as file:
                 clf = pickle.load(file)
+
+            print('CLF:/n', clf)
+
+            #Perform prediction only on features (exclude 'label' column)
+            #features = df.drop(columns=['label'])
+            # Perform intrusion detection
+            #predictions = clf.predict(features)
+            
 
             # Save confusion matrix plot
             plt.figure(figsize=(8, 6))
@@ -135,7 +143,7 @@ def submit():
                 clf = pickle.load(file)
 
 
-                predictions = clf.predict(X_Df_Preprocessed)
+                #predictions = clf.predict(X_Df_Preprocessed)
                 # Save confusion matrix plot
                 plt.figure(figsize=(8, 6))
                 #sns.heatmap(confusion_matrixSVM, annot=True, fmt='d', cmap='Blues')
