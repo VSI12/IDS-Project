@@ -5,7 +5,10 @@ import os
 import pickle
 import seaborn as sns
 import matplotlib.pyplot as plt
+import shutil
 
+
+from datetime import datetime
 from sklearn import preprocessing
 from flask import Flask, flash, render_template,request,redirect, url_for, jsonify
 from sklearn.tree import DecisionTreeClassifier
@@ -21,7 +24,10 @@ app.debug = True
 
 
 route_accessed = {"upload_KNN": False, "upload_DecisionTree": False, "upload_SVM": False}
-
+confusion_matrix_folder = 'Confusion Matrices'
+confusion_matrix_decisionTree = 'Confusion Matrices Decision Tree'
+confusion_matrix_KNN = 'Confusion Matrices KNN'
+confusion_matrix_SVM = 'confusion Matrices SVM'
 
 class UploadFileForm(FlaskForm):
     file = FileField("File")
