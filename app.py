@@ -103,10 +103,10 @@ def submit():
             plt.xlabel('Predicted Label')
             plt.ylabel('True Label')
             #plt.tight_layout()
-            plt.savefig('confusion_matrix.png')
+            plt.savefig('confusion_matrixDecisionTree.png')
 
             # Convert plot to base64 for display in HTML
-            with open('confusion_matrix.png', 'rb') as img_file:
+            with open('confusion_matrixDecisionTree.png', 'rb') as img_file:
                 img_base64 = base64.b64encode(img_file.read()).decode('utf-8')
 
 
@@ -125,10 +125,10 @@ def submit():
                 plt.xlabel('Predicted Label')
                 plt.ylabel('True Label')
                 #plt.tight_layout()
-                plt.savefig('confusion_matrix.png')
+                plt.savefig('confusion_matrixKNN.png')
 
                 # Convert plot to base64 for display in HTML
-                with open('confusion_matrix.png', 'rb') as img_file:
+                with open('confusion_matrixKNN.png', 'rb') as img_file:
                     img_base64 = base64.b64encode(img_file.read()).decode('utf-8')
 
                 
