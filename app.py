@@ -69,7 +69,8 @@ def submit():
     from intrusion_detection import confusion_matrixDecisionTreeClassifier,confusion_matrixKNN
     from intrusion_detection import load_dataset, col_names,confusion_matrix,categorical_columns
 
-
+    # Generate a timestamp
+    timestamp = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
 
    
     if request.method == 'POST':
