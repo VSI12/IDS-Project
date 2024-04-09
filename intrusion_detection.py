@@ -284,13 +284,10 @@ def load_dataset(test_url):
 
     return 0
 
-load_dataset(test_url)
+
 
 #DECISION TREE CLASSIFIER
 def DecisionTree():
-
-    global confusion_matrixDecisionTreeClassifier
-
     #DECISION TREE CLASSIFIER
     clf_Tree = DecisionTreeClassifier()
     train0=time.time()
@@ -325,13 +322,10 @@ def DecisionTree():
     with open('IDS_model_DECISION TREE CLASSIFIER.pkl', 'wb') as file:
         pickle.dump(clf_Tree, file)
     return confusion_matrixDecisionTreeClassifier
-DecisionTree()
 
 
-'''#SVM    
-def SVM():
-
-    global confusion_matrixSVM
+#SVM    
+'''def SVM():
 
     #SUPPORT VECTOR MACHINE
     clf_svm= svm.SVC()
@@ -367,12 +361,10 @@ def SVM():
     with open('IDS_model_SVM.pkl', 'wb') as file:
         pickle.dump(clf_svm, file)
     return confusion_matrixSVM
-SVM()'''
-    
+    '''
 
 #K-NEAREST NEIGHBOUR
 def KNN():
-    global confusion_matrixKNN
 
     clf_KNN = KNeighborsClassifier()
     train0 = time.time()
@@ -403,7 +395,6 @@ def KNN():
     with open('IDS_model_KNN.pkl', 'wb') as file:
         pickle.dump(clf_KNN, file)
     return confusion_matrixKNN
-KNN()
 
 #make function for the datasets df and call it up to that point
 def preprocess(df):

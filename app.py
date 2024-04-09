@@ -74,12 +74,14 @@ def upload_SVM():
 
 @app.route('/submit', methods=['POST'])
 def submit():
+    from intrusion_detection import load_dataset, col_names,confusion_matrix,categorical_columns
+
     file = request.files['file']
     file_path = "/" + file.filename
     file.save("dataset.csv")
-    from intrusion_detection import confusion_matrixDecisionTreeClassifier,confusion_matrixKNN
-    from intrusion_detection import load_dataset, col_names,confusion_matrix,categorical_columns
+    load_dataset('dataset.csv')
 
+    
     # Generate a timestamp
     timestamp = datetime.now().strftime("%Y-%m-%d_%H.%M.%S")
 
@@ -102,6 +104,8 @@ def submit():
 
 
         if route_accessed["upload_DecisionTree"] == True:
+            from intrusion_detection import DecisionTree
+
             #load the trained model
             with open('IDS_model_DECISION TREE CLASSIFIER.pkl', "rb") as file:
                 clf = pickle.load(file)
@@ -113,7 +117,7 @@ def submit():
             # Perform intrusion detection
             #predictions = clf.predict(features)
             
-
+            confusion_matrixDecisionTreeClassifier = DecisionTree()
             # Save confusion matrix plot
             plt.figure(figsize=(8, 6))
             sns.heatmap(confusion_matrixDecisionTreeClassifier, annot=True, fmt='d', cmap='Blues')
@@ -138,10 +142,12 @@ def submit():
 
 
         elif route_accessed["upload_KNN"] == True:
+             from intrusion_detection import KNN
             #load the trained model
              with open('IDS_model_KNN.pkl', "rb") as file:
                 clf = pickle.load(file)
 
+                confusion_matrixKNN = KNN()
                  # Save confusion matrix plot
                 plt.figure(figsize=(8, 6))
                 sns.heatmap(confusion_matrixKNN, annot=True, fmt='d', cmap='Blues')
@@ -185,7 +191,6 @@ def submit():
                  #define the new file name with the timestamp
                 filename = f'confusion_matrixSVM({timestamp}).png'
                 plt.savefig(filename)
-                plt.savefig(filename)
 
                 # Convert plot to base64 for display in HTML
                 with open(filename, 'rb') as img_file:
@@ -193,6 +198,8 @@ def submit():
 
                 if os.path.exists(filename):
                     shutil.move(filename, os.path.join(confusion_matrix_SVM, filename))
+
+                return render_template('result.html', confusion_matrix=img_base64)
 
 
 
