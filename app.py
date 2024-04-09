@@ -29,12 +29,12 @@ route_accessed = {"upload_KNN": False, "upload_DecisionTree": False, "upload_SVM
 confusion_matrix_folder = 'Confusion Matrices'
 confusion_matrix_decisionTree = 'Confusion Matrices/Confusion Matrices Decision Tree'
 confusion_matrix_KNN = 'Confusion Matrices/Confusion Matrices KNN'
-confusion_matrix_SVM = 'Confusion Matrices/confusion Matrices SVM'
+confusion_matrix_NaiveBayes = 'Confusion Matrices/confusion Matrices NaiveBayes'
 
 if not os.path.exists(confusion_matrix_folder):
     os.makedirs(confusion_matrix_folder)
 
-confusion_matrices_directories = [confusion_matrix_decisionTree,confusion_matrix_KNN,confusion_matrix_SVM]
+confusion_matrices_directories = [confusion_matrix_decisionTree,confusion_matrix_KNN,confusion_matrix_NaiveBayes]
 for x in confusion_matrices_directories:
     if not os.path.exists(x):
         os.makedirs(x)
@@ -199,7 +199,7 @@ def submit():
                     img_base64 = base64.b64encode(img_file.read()).decode('utf-8')
 
                 if os.path.exists(filename):
-                    shutil.move(filename, os.path.join(confusion_matrix_SVM, filename))
+                    shutil.move(filename, os.path.join(confusion_matrix_NaiveBayes, filename))
 
                 return render_template('result.html', confusion_matrix=img_base64)
 
