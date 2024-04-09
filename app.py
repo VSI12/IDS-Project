@@ -6,8 +6,12 @@ import pickle
 import seaborn as sns
 import matplotlib.pyplot as plt
 import shutil
+import smtplib
+import logging
 
 
+from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
 from datetime import datetime
 from sklearn import preprocessing
 from flask import Flask, flash, render_template,request,redirect, url_for, jsonify
@@ -206,7 +210,24 @@ def submit():
 
     return 'Well done! File uploaded sucessfully'
 
+def send_email(subject, body, sender_email, receiver_email, smtp_server, smtp_port, smtp_username, smtp_password):
+    try:
+        # Create message
+        msg = MIMEMultipart()
+        msg['From'] = sender_email
+        msg['To'] = receiver_email
+        msg['Subject'] = subject
+        msg.attach(MIMEText(body, 'plain'))
 
+        # Establish SMTP connection
+        with smtplib.SMTP(smtp_server, smtp_port) as server:
+            server.starttls()
+            server.login(smtp_username, smtp_password)
+            server.sendmail(sender_email, receiver_email, msg.as_string())
+
+        logging.info("Email sent successfully")
+    except Exception as e:
+        logging.error(f"Failed to send email: {e}")
 
 
 if __name__ == '__main__':
