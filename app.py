@@ -174,22 +174,24 @@ def submit():
 
 
         else:
+            from intrusion_detection import NaiveBayes
+            confusion_matrixNaiveBayes = NaiveBayes()
             #load the trained model
-            with open('IDS_model_SVM.pkl', "rb") as file:
+            with open('IDS_model_NaiveBayes.pkl', "rb") as file:
                 clf = pickle.load(file)
 
-
+                confusion_matrixNaiveBayes = NaiveBayes()
                 #predictions = clf.predict(X_Df_Preprocessed)
                 # Save confusion matrix plot
                 plt.figure(figsize=(8, 6))
-                #sns.heatmap(confusion_matrixSVM, annot=True, fmt='d', cmap='Blues')
+                sns.heatmap(confusion_matrixNaiveBayes, annot=True, fmt='d', cmap='Blues')
                 plt.title('Confusion Matrix')
                 plt.xlabel('Predicted Label')
                 plt.ylabel('True Label')
                 #plt.tight_layout(
                 
                  #define the new file name with the timestamp
-                filename = f'confusion_matrixSVM({timestamp}).png'
+                filename = f'confusion_matrixNaiveBayes({timestamp}).png'
                 plt.savefig(filename)
 
                 # Convert plot to base64 for display in HTML
