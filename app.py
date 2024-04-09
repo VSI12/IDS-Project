@@ -25,6 +25,7 @@ app.debug = True
 
 route_accessed = {"upload_KNN": False, "upload_DecisionTree": False, "upload_SVM": False}
 
+#for generating the foilders for the confusion matrices
 confusion_matrix_folder = 'Confusion Matrices'
 confusion_matrix_decisionTree = 'Confusion Matrices/Confusion Matrices Decision Tree'
 confusion_matrix_KNN = 'Confusion Matrices/Confusion Matrices KNN'
@@ -80,7 +81,7 @@ def submit():
     from intrusion_detection import load_dataset, col_names,confusion_matrix,categorical_columns
 
     # Generate a timestamp
-    timestamp = datetime.now().strftime("%Y/%m/%d_%H:%M:%S")
+    timestamp = datetime.now().strftime("%Y-%m-%d_%H.%M.%S")
 
    
     if request.method == 'POST':
