@@ -9,9 +9,7 @@ import shutil
 import smtplib
 import logging
 
-
-from email.mime.multipart import MIMEMultipart
-from email.mime.text import MIMEText
+from flask_mailman import Mail,EmailMessage
 from datetime import datetime
 from sklearn import preprocessing
 from flask import Flask, flash, render_template,request,redirect, url_for, jsonify
@@ -26,6 +24,14 @@ app.config['SECRET_KEY']='supersecret'
 app.config['UPLOAD_FOLDER'] = 'static/files'
 app.debug = True
 
+#to send an email
+app.config['MAIL_SERVER'] = 'smtp.gmail.com'
+app.config['MAIL_PORT'] = 465
+app.config['MAIL_USERNAME'] = 'victoriliya15@gmail.com'
+app.config['MAIL_PASSWORD'] = 'ambjenrielnutqnn'
+app.config['MAIL_USE_TLS'] = False
+app.config['MAIL_USE_SSL'] = True
+mail = Mail(app)
 
 route_accessed = {"upload_KNN": False, "upload_DecisionTree": False, "upload_NaiveBayes": False}
 
@@ -114,13 +120,6 @@ def submit():
             with open('IDS_model_DECISION TREE CLASSIFIER.pkl', "rb") as file:
                 clf = pickle.load(file)
 
-            print('CLF:/n', clf)
-
-            #Perform prediction only on features (exclude 'label' column)
-            #features = df.drop(columns=['label'])
-            # Perform intrusion detection
-            #predictions = clf.predict(features)
-            
             confusion_matrixDecisionTreeClassifier = DecisionTree()
             # Save confusion matrix plot
             plt.figure(figsize=(8, 6))
@@ -143,7 +142,6 @@ def submit():
 
             os.remove('dataset.csv')  # Remove uploaded file
             return render_template('result.html', confusion_matrix=img_base64, results=results)
-
 
         elif route_accessed["upload_KNN"] == True:
              from intrusion_detection import KNN
@@ -210,25 +208,8 @@ def submit():
 
     return 'Well done! File uploaded sucessfully'
 
-def send_email(subject, body, sender_email, receiver_email, smtp_server, smtp_port, smtp_username, smtp_password):
-    try:
-        # Create message
-        msg = MIMEMultipart()
-        msg['From'] = sender_email
-        msg['To'] = receiver_email
-        msg['Subject'] = subject
-        msg.attach(MIMEText(body, 'plain'))
 
-        # Establish SMTP connection
-        with smtplib.SMTP(smtp_server, smtp_port) as server:
-            server.starttls()
-            server.login(smtp_username, smtp_password)
-            server.sendmail(sender_email, receiver_email, msg.as_string())
-
-        logging.info("Email sent successfully")
-    except Exception as e:
-        logging.error(f"Failed to send email: {e}")
-
+    
 
 if __name__ == '__main__':
     app.run(port=6500)
