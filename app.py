@@ -24,12 +24,19 @@ app.debug = True
 
 
 route_accessed = {"upload_KNN": False, "upload_DecisionTree": False, "upload_SVM": False}
+
 confusion_matrix_folder = 'Confusion Matrices'
-confusion_matrix_decisionTree = 'Confusion Matrices Decision Tree'
-confusion_matrix_KNN = 'Confusion Matrices KNN'
-confusion_matrix_SVM = 'confusion Matrices SVM'
+confusion_matrix_decisionTree = 'Confusion Matrices/Confusion Matrices Decision Tree'
+confusion_matrix_KNN = 'Confusion Matrices/Confusion Matrices KNN'
+confusion_matrix_SVM = 'Confusion Matrices/confusion Matrices SVM'
 
+if not os.path.exists(confusion_matrix_folder):
+    os.makedirs(confusion_matrix_folder)
 
+confusion_matrices_directories = [confusion_matrix_decisionTree,confusion_matrix_KNN,confusion_matrix_SVM]
+for x in confusion_matrices_directories:
+    if not os.path.exists(x):
+        os.makedirs(x)
 
 
 class UploadFileForm(FlaskForm):
