@@ -121,9 +121,9 @@ def submit():
             # Save confusion matrix plot
             plt.figure(figsize=(8, 6))
             sns.heatmap(confusion_matrixDecisionTreeClassifier, annot=True, fmt='d', cmap='Blues')
-            plt.title('Confusion Matrix')
-            plt.xlabel('Predicted Label')
-            plt.ylabel('True Label')
+            plt.xlabel('Predicted Attacks')
+            plt.ylabel('Actual Attacks')
+            results = "CONFUSION MATRIX FOR THE DECISION TREE MODEL"
             #plt.tight_layout()
 
              #define the new file name with the timestamp
@@ -138,7 +138,7 @@ def submit():
                 shutil.move(filename, os.path.join(confusion_matrix_decisionTree, filename))
 
             os.remove('dataset.csv')  # Remove uploaded file
-            return render_template('result.html', confusion_matrix=img_base64)
+            return render_template('result.html', confusion_matrix=img_base64, results=results)
 
 
         elif route_accessed["upload_KNN"] == True:
@@ -151,10 +151,9 @@ def submit():
                  # Save confusion matrix plot
                 plt.figure(figsize=(8, 6))
                 sns.heatmap(confusion_matrixKNN, annot=True, fmt='d', cmap='Blues')
-                plt.title('Confusion Matrix')
-                plt.xlabel('Predicted Label')
-                plt.ylabel('True Label')
-
+                plt.xlabel('Predicted Attacks')
+                plt.ylabel('Actual Attacks')
+                results = "CONFUSION MATRIX FOR THE KNN MODEL"
                  #define the new file name with the timestamp
                 filename = f'confusion_matrixKNN({timestamp}).png'
                 plt.savefig(filename)
@@ -169,7 +168,7 @@ def submit():
                     shutil.move(filename, os.path.join(confusion_matrix_KNN, filename))
 
 
-                return render_template('result.html', confusion_matrix=img_base64)
+                return render_template('result.html', confusion_matrix=img_base64,results=results)
 
 
 
@@ -180,19 +179,19 @@ def submit():
             with open('IDS_model_NaiveBayes.pkl', "rb") as file:
                 clf = pickle.load(file)
 
-                confusion_matrixNaiveBayes = NaiveBayes()
+                
                 #predictions = clf.predict(X_Df_Preprocessed)
                 # Save confusion matrix plot
                 plt.figure(figsize=(8, 6))
                 sns.heatmap(confusion_matrixNaiveBayes, annot=True, fmt='d', cmap='Blues')
-                plt.title('Confusion Matrix')
-                plt.xlabel('Predicted Label')
-                plt.ylabel('True Label')
+                plt.xlabel('Predicted Attacks')
+                plt.ylabel('Actual Attacks')
                 #plt.tight_layout(
                 
                  #define the new file name with the timestamp
                 filename = f'confusion_matrixNaiveBayes({timestamp}).png'
                 plt.savefig(filename)
+                results = "CONFUSION MATRIX FOR THE NAIVE BAYES MODEL"
 
                 # Convert plot to base64 for display in HTML
                 with open(filename, 'rb') as img_file:
@@ -201,7 +200,7 @@ def submit():
                 if os.path.exists(filename):
                     shutil.move(filename, os.path.join(confusion_matrix_NaiveBayes, filename))
 
-                return render_template('result.html', confusion_matrix=img_base64)
+                return render_template('result.html', confusion_matrix=img_base64, results=results)
 
 
 

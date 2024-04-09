@@ -395,31 +395,3 @@ def KNN():
         pickle.dump(clf_KNN, file)
     return confusion_matrixKNN
 
-#make function for the datasets df and call it up to that point
-def preprocess(df):
-     #Drop redundant column
-    df.drop(['num_outbound_cmds'], axis=1, inplace=True)
-
-    # One-hot encoding for categorical columns
-    df_categorical_values = df[categorical_columns]
-    df_categorical_values_enc = pd.get_dummies(df_categorical_values)
-
-    # Drop original categorical columns and concatenate one-hot encoded columns
-    df = pd.concat([df, df_categorical_values_enc], axis=1)
-    df.drop(categorical_columns, axis=1, inplace=True)
-
-    # Convert labels to binary representations
-    label_encoder = LabelEncoder()
-    df['label'] = label_encoder.fit_transform(df['label'])
-
-    # Split features and labels
-    X = df.drop('label', axis=1)
-    y = df['label']
-
-    # Scale features
-    scaler = StandardScaler()
-    X_scaled = scaler.fit_transform(X)
-    
-    return X_scaled, y
-df_test = pd.read_csv(test_url, header=None, names = col_names)
-preprocess(df_test)
