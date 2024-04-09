@@ -30,6 +30,8 @@ confusion_matrix_KNN = 'Confusion Matrices KNN'
 confusion_matrix_SVM = 'confusion Matrices SVM'
 
 
+
+
 class UploadFileForm(FlaskForm):
     file = FileField("File")
     submit = SubmitField("Upload FIle")
@@ -71,7 +73,7 @@ def submit():
     from intrusion_detection import load_dataset, col_names,confusion_matrix,categorical_columns
 
     # Generate a timestamp
-    timestamp = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
+    timestamp = datetime.now().strftime("%Y/%m/%d_%H:%M:%S")
 
    
     if request.method == 'POST':
@@ -117,7 +119,7 @@ def submit():
             plt.savefig(filename)
 
             # Convert plot to base64 for display in HTML
-            with open('confusion_matrixDecisionTree.png', 'rb') as img_file:
+            with open(filename, 'rb') as img_file:
                 img_base64 = base64.b64encode(img_file.read()).decode('utf-8')
 
             os.remove('dataset.csv')  # Remove uploaded file
@@ -135,11 +137,15 @@ def submit():
                 plt.title('Confusion Matrix')
                 plt.xlabel('Predicted Label')
                 plt.ylabel('True Label')
+
+                 #define the new file name with the timestamp
+                filename = f'confusion_matrixKNN({timestamp}).png'
+                plt.savefig(filename)
                 #plt.tight_layout()
-                plt.savefig('confusion_matrixKNN.png')
+                plt.savefig(filename)
 
                 # Convert plot to base64 for display in HTML
-                with open('confusion_matrixKNN.png', 'rb') as img_file:
+                with open(filename, 'rb') as img_file:
                     img_base64 = base64.b64encode(img_file.read()).decode('utf-8')
 
                 
@@ -161,27 +167,18 @@ def submit():
                 plt.title('Confusion Matrix')
                 plt.xlabel('Predicted Label')
                 plt.ylabel('True Label')
-                #plt.tight_layout()
-                plt.savefig('confusion_matrixSVM.png')
+                #plt.tight_layout(
+                
+                 #define the new file name with the timestamp
+                filename = f'confusion_matrixSVM({timestamp}).png'
+                plt.savefig(filename)
+                plt.savefig(filename)
 
                 # Convert plot to base64 for display in HTML
-                with open('confusion_matrixSVM.png', 'rb') as img_file:
+                with open(filename, 'rb') as img_file:
                     img_base64 = base64.b64encode(img_file.read()).decode('utf-8')
 
 
-        #Check if 'label' column is present in the DataFrame
-     #   if 'label' not in df.columns:
-      #    return "Error: 'label' column not found in the uploaded file"
-
-        
-         #Perform prediction only on features (exclude 'label' column)
-       # features = df.drop(columns=['label'])
-
-        # Perform intrusion detection
-       # predictions = clf.predict(features)
-    
-   
-    
 
     return 'Well done! File uploaded sucessfully'
 
