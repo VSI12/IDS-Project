@@ -23,7 +23,7 @@ app.config['UPLOAD_FOLDER'] = 'static/files'
 app.debug = True
 
 
-route_accessed = {"upload_KNN": False, "upload_DecisionTree": False, "upload_SVM": False}
+route_accessed = {"upload_KNN": False, "upload_DecisionTree": False, "upload_NaiveBayes": False}
 
 #for generating the foilders for the confusion matrices
 confusion_matrix_folder = 'Confusion Matrices'
@@ -65,9 +65,9 @@ def upload_DecisionTree():
     form = UploadFileForm()
     return render_template('upload.html', form=form)
 
-@app.route("/upload_SVM")
-def upload_SVM():
-    route_accessed["upload_SVM"] = True
+@app.route("/upload_NaiveBayes")
+def upload_NaiveBayes():
+    route_accessed["upload_NaiveBayes"] = True
     form = UploadFileForm()
     return render_template('upload.html', form=form)
 

@@ -7,6 +7,6 @@ document.getElementById("KNN").addEventListener("click", function() {
     window.location.href = "/upload_KNN";
 });
 
-document.getElementById("SVM").addEventListener("click", function() {
-    window.location.href = "/upload_SVM";
+document.getElementById("NaiveBayes").addEventListener("click", function() {
+    window.location.href = "/upload_NaiveBayes";
 });
