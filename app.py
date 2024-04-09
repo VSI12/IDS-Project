@@ -29,6 +29,7 @@ confusion_matrix_decisionTree = 'Confusion Matrices Decision Tree'
 confusion_matrix_KNN = 'Confusion Matrices KNN'
 confusion_matrix_SVM = 'confusion Matrices SVM'
 
+
 class UploadFileForm(FlaskForm):
     file = FileField("File")
     submit = SubmitField("Upload FIle")
@@ -110,7 +111,10 @@ def submit():
             plt.xlabel('Predicted Label')
             plt.ylabel('True Label')
             #plt.tight_layout()
-            plt.savefig('confusion_matrixDecisionTree.png')
+
+             #define the new file name with the timestamp
+            filename = f'confusion_matrixDecisionTree({timestamp}).png'
+            plt.savefig(filename)
 
             # Convert plot to base64 for display in HTML
             with open('confusion_matrixDecisionTree.png', 'rb') as img_file:
