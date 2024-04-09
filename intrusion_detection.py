@@ -8,13 +8,14 @@ import matplotlib.pyplot as plt
 import time
 import logging
 
-from sklearn import preprocessing,svm,metrics
+from sklearn import preprocessing,metrics
 from sklearn.model_selection import train_test_split, cross_val_score
 from sklearn.preprocessing import StandardScaler, LabelEncoder, OneHotEncoder, label_binarize
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import accuracy_score,classification_report, confusion_matrix, roc_curve,auc
 from sklearn.tree import DecisionTreeClassifier 
 from sklearn. neighbors import KNeighborsClassifier
+from sklearn.naive_bayes import GaussianNB 
 
 import warnings
 warnings.filterwarnings('ignore')
@@ -325,43 +326,41 @@ def DecisionTree():
 
 
 #SVM    
-'''def SVM():
+def NaiveBayes():
 
-    #SUPPORT VECTOR MACHINE
-    clf_svm= svm.SVC()
-    train_svm0=time.time()
-    #traning DT
-    clf_svm=clf_svm.fit(X_Df,Y_Df.astype(int))
-    train_svm1=time.time()-train_svm0
+    #NAIVEBAYES
+    clf_Naive = GaussianNB()
+    train0 = time.time()
+    # Train Decision Tree Classifer
+    clf_Naive = clf_Naive.fit(X_Df, Y_Df.astype(int))
+    train1 = time.time() - train0
 
-    test_svm0=time.time()
-    Y_Df_pred_svm=clf_svm.predict(X_Df_test)
-    test_svm1 = time.time() - test_svm0
+    test0 = time.time()
+    Y_Df_pred=clf_Naive.predict(X_Df_test)
+    test1 = time.time() - test0
 
 
-    accuracy = cross_val_score(clf_svm, X_Df_test, Y_Df_test, cv=10, scoring='accuracy')
+
+    accuracy = cross_val_score(clf_Naive, X_Df_test, Y_Df_test, cv=10, scoring='accuracy')
     print("Accuracy: %0.5f (+/- %0.5f)" % (accuracy.mean(), accuracy.std() * 2))
-    precision = cross_val_score(clf_svm, X_Df_test, Y_Df_test, cv=10, scoring='precision')
-    print("Precision: %0.5f (+/- %0.5fS)" % (precision.mean(), precision.std() * 2))
-    recall = cross_val_score(clf_svm, X_Df_test, Y_Df_test, cv=10, scoring='recall')
+    precision = cross_val_score(clf_Naive, X_Df_test, Y_Df_test, cv=10, scoring='precision')
+    print("Precision: %0.5f (+/- %0.5f)" % (precision.mean(), precision.std() * 2))
+    recall = cross_val_score(clf_Naive, X_Df_test, Y_Df_test, cv=10, scoring='recall')
     print("Recall: %0.5f (+/- %0.5f)" % (recall.mean(), recall.std() * 2))
-    f = cross_val_score(clf_svm, X_Df_test, Y_Df_test, cv=10, scoring='f1')
+    f = cross_val_score(clf_Naive, X_Df_test, Y_Df_test, cv=10, scoring='f1')
     print("F-measure: %0.5f (+/- %0.5f)" % (f.mean(), f.std() * 2))
-    print("train_time:%.3fs\n" %train_svm1)
-    print("test_time:%.3fs\n" %test_svm1)
+    print("train_time:%.3fs\n" %train1)
+    print("test_time:%.3fs\n" %test1)
     
     # Create confusion matrix
-    confusion_matrixSVM = pd.crosstab(Y_Df_test, Y_Df_pred_svm, rownames=['Actual attacks'], colnames=['Predicted attacks'])
-
-    print('confusion matrix for SVM')
-    print(pd.crosstab(Y_Df_test, Y_Df_pred_svm, rownames=['Actual attacks'], colnames=['Predicted attacks']))
+    confusion_matrixNaiveBayes = pd.crosstab(Y_Df_test, Y_Df_pred, rownames=['Actual attacks'], colnames=['Predicted attacks'])
 
 
     # Save trained model
-    with open('IDS_model_SVM.pkl', 'wb') as file:
-        pickle.dump(clf_svm, file)
-    return confusion_matrixSVM
-    '''
+    with open('IDS_model_NaiveBayes.pkl', 'wb') as file:
+        pickle.dump(clf_Naive, file)
+    return confusion_matrixNaiveBayes
+    
 
 #K-NEAREST NEIGHBOUR
 def KNN():
