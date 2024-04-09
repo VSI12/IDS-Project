@@ -130,6 +130,9 @@ def submit():
             with open(filename, 'rb') as img_file:
                 img_base64 = base64.b64encode(img_file.read()).decode('utf-8')
 
+            if os.path.exists(filename):
+                shutil.move(filename, os.path.join(confusion_matrix_decisionTree, filename))
+
             os.remove('dataset.csv')  # Remove uploaded file
             return render_template('result.html', confusion_matrix=img_base64)
 
@@ -156,7 +159,9 @@ def submit():
                 with open(filename, 'rb') as img_file:
                     img_base64 = base64.b64encode(img_file.read()).decode('utf-8')
 
-                
+                if os.path.exists(filename):
+                    shutil.move(filename, os.path.join(confusion_matrix_KNN, filename))
+
 
                 return render_template('result.html', confusion_matrix=img_base64)
 
@@ -185,6 +190,9 @@ def submit():
                 # Convert plot to base64 for display in HTML
                 with open(filename, 'rb') as img_file:
                     img_base64 = base64.b64encode(img_file.read()).decode('utf-8')
+
+                if os.path.exists(filename):
+                    shutil.move(filename, os.path.join(confusion_matrix_SVM, filename))
 
 
 
