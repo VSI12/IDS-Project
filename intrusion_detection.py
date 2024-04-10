@@ -28,7 +28,7 @@ plt.rcParams['xtick.labelsize'] = 12
 plt.rcParams['ytick.labelsize'] = 12
 
 #load the dataset
-train_url = 'NSL-KDD 2/train_data.csv'
+train_url = 'static/Files/NSL-KDD 2/train_data.csv'
 test_url = 'dataset.csv'
 
 
