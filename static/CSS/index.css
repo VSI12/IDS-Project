@@ -19,16 +19,13 @@ section{
   height: 100vh;
 }
 
-h1,.type,p{
-  height:100%;
-  width: 100%;
+h1,p{
   display: flex;
   align-items: center;
   justify-content: center;
   text-align: center;
 
-
-  font-size: 85px;
+border: 2px solid red;
   font-family: 'ISOCTEUR', sans-serif;
   font-weight: 500;
   color:azure;
@@ -41,10 +38,17 @@ h1,.type,p{
   overflow: hidden;
   border-right: 3px solid;
   font-family: 'ISOCTEUR', sans-serif;
-  font-size: 85px;
+  font-size: clamp(20px,8vw,85px);
   font-weight: 500;
   color:azure;
   letter-spacing: 5px;
+}
+.type{
+  display: flex;
+  justify-content: center;
+  max-width: 100%;
+  word-wrap: break-word;
+  border: 2px solid rgb(76, 72, 94);
 }
 
 @keyframes typing {
@@ -65,11 +69,12 @@ h1,.type,p{
   
 }
 .line{
+  display: flex;
   padding-top: 50px;
-  font-size: 85px;
+  font-size: clamp(20px,8vw,85px);
 }
 p{
-  font-size: 50px;
+  font-size: clamp(20px,5vw,50px);
   color: rgb(0, 255, 255);
 }
 
@@ -86,7 +91,28 @@ p{
   justify-content: center;
   align-items: center;
 }
-
+@media (max-width: 500px){
+  .button{
+    height: 70%;
+    padding: 20px 150px;
+    border: 2px solid rgb(255, 0, 255);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .blur{
+    height: 30%;
+    border: 2px solid red;
+    position:relative;
+    bottom: 0px;
+    margin-top: auto;
+  }
+  .two{
+    display:flex;
+    flex-direction: column;
+    min-height: 100vh;
+  }
+}
 .button{
   padding: 50px 300px;
   position: absolute;
@@ -99,7 +125,7 @@ p{
   transition: background-color 0.3s ease;
 
   font-family: 'ISOCTEUR', sans-serif;
-  font-size: 80px;
+  font-size: clamp(20px,8vw,85px);
   font-weight: 100;
   letter-spacing: 3px;
 }
