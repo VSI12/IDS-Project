@@ -3,7 +3,6 @@ import numpy as np
 import seaborn as sns
 import imblearn
 import pickle
-import matplotlib
 import matplotlib.pyplot as plt
 import time
 import logging
