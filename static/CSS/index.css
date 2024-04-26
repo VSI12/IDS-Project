@@ -84,7 +84,7 @@ h1,p{
   clip: rect(44px, 450px, 56px, 0);
   /* Runs our glitch-anim defined below to run in a 5s loop, infinitely,
   with an alternating animation to keep things fresh. */
-  animation: glitch-anim 5s infinite linear alternate-reverse;
+  animation: glitch-anim 5s 2s infinite linear alternate-reverse;
 }
 .text::after {
   content: attr(data-text);
@@ -95,7 +95,7 @@ h1,p{
   height: 100%;
   left: -2px;
   text-shadow: -2px 0 #00fff9, 2px 2px #ff00c1;
-  animation: glitch-anim2 0.8s infinite linear alternate-reverse;
+  animation: glitch-anim2 0.8s 2s infinite linear alternate-reverse;
 }
 
 .reveal{
