@@ -17,20 +17,101 @@ body, html {
 
 .container {
   height: 100%;
+
 }
 
 .black-section {
-  background-color: black;
-  height: 10%;
+  background-color: rgba(0, 0, 0, 0.3);
+  max-width: 80%;
+  padding: 1.3rem 10%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: 'ISOCTEUR', sans-serif;
+  z-index: 100;
+}
+
+.logo{
+  font-size: 2rem;
+  color: aliceblue;
+  text-decoration: none;
+}
+.navbar a{
+  font-size: 1.2rem;
+  color: aliceblue;
+  text-decoration: none;
+  font-weight: 500;
+  margin-left: 2.5rem;
+}
+#check{
+  display: none;
+}
+
+.icons{
+  position: absolute;
+  right: 5%;
+  color: aliceblue;
+  font-size: 2.8rem;
+  cursor: pointer;
+  display: none;
+}
+@media (max-width: 740px ){
+  .icons{
+    display: inline-flex;
+  }
+  #check:checked~.icons #menu{
+    display: none;
+  }
+  #check:checked~.icons #close{
+    display: inline-flex;
+  }
+  .icons #close{
+    display: none;
+  }
+  .navbar{
+    position: absolute;
+    top: 9vh;
+    left: 0;
+    width: 100%;
+    height: 0;
+    overflow: hidden;
+    background: rgba(0, 0, 0, 0.24);
+    backdrop-filter: blur(10px);
+    transition: .3s ease;
+  }
+  #check:checked~.navbar{
+    height: 17.7rem;
+    z-index: 100;
+  }
+  .navbar a{
+    display: block;
+    font-size: 1.1rem;
+    margin: 1.5rem 0;
+    text-align: center;
+  }
 }
 
 .content-section {
-  height: 90%; /* Take up the remaining height */
+  bottom: 0;
+  /* Take up the remaining height */
   display: flex;
   justify-content: center;
   align-items: center;
 }
+.text{
+  display: flex;
+  font-size: 65px;
+  font-family: 'ISOCTEUR', sans-serif;
+  font-weight: 500;
+  color:rgb(255, 255, 255);
+  justify-content: center;
+  align-items: center;
+  letter-spacing: 3px;
 
+  width: 100%; /* Ensure content fills the container width */
+    white-space: nowrap; /* Prevent text wrapping */
+    word-wrap: break-word;
+}
 .content {
   display: flex;
   justify-content: space-between;
@@ -61,24 +142,7 @@ body, html {
   height: 700px; /* Adjust as needed */
 }
 
-.text{
-  display: flex;
-  font-size: 65px;
-  font-family: 'ISOCTEUR', sans-serif;
-  font-weight: 500;
-  color:rgb(255, 255, 255);
-  justify-content: center;
-  align-items: center;
-  letter-spacing: 3px;
 
-  text-overflow: ellipsis;
-  overflow: hidden;
-  margin: auto;
-
-  width: 100%; /* Ensure content fills the container width */
-    white-space: nowrap; /* Prevent text wrapping */
-    word-wrap: break-word;
-}
 
 .ann{
   padding: 50px 100px;
