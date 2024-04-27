@@ -1,4 +1,3 @@
-import io
 import base64
 import pandas as pd
 import os
@@ -6,32 +5,20 @@ import pickle
 import seaborn as sns
 import matplotlib.pyplot as plt
 import shutil
-import smtplib
-import logging
 
-from flask_mailman import Mail,EmailMessage
+from concurrent.futures import ThreadPoolExecutor
 from datetime import datetime
-from sklearn import preprocessing
 from flask import Flask, flash, render_template,request,redirect, url_for, jsonify
-from sklearn.tree import DecisionTreeClassifier
-from sklearn.preprocessing import LabelEncoder,OneHotEncoder,StandardScaler
 from flask_wtf import FlaskForm
 from wtforms import FileField, SubmitField
 from werkzeug.utils import secure_filename
 
 app = Flask(__name__)
+executor = ThreadPoolExecutor(max_workers=1)
+
 app.config['SECRET_KEY']='supersecret'
 app.config['UPLOAD_FOLDER'] = 'static/files'
 app.debug = True
-
-#to send an email
-app.config['MAIL_SERVER'] = 'smtp.gmail.com'
-app.config['MAIL_PORT'] = 465
-app.config['MAIL_USERNAME'] = 'victoriliya15@gmail.com'
-app.config['MAIL_PASSWORD'] = 'ambjenrielnutqnn'
-app.config['MAIL_USE_TLS'] = False
-app.config['MAIL_USE_SSL'] = True
-mail = Mail(app)
 
 route_accessed = {"upload_KNN": False, "upload_DecisionTree": False, "upload_NaiveBayes": False}
 
