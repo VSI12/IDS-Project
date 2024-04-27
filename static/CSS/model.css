@@ -17,36 +17,36 @@ body, html {
 
 .container {
   height: 100%;
-
+  /* display: flex;
+  flex-direction: column; */
 }
-
+/* nav bar */
 .black-section {
   background-color: rgba(0, 0, 0, 0.3);
-  max-width: 80%;
-  padding: 1.3rem 10%;
+  max-width: 90%;
+  padding: 1.3rem 5%;
   display: flex;
   justify-content: space-between;
   align-items: center;
   font-family: 'ISOCTEUR', sans-serif;
   z-index: 100;
 }
-
 .logo{
   font-size: 2rem;
   color: aliceblue;
   text-decoration: none;
+
 }
 .navbar a{
-  font-size: 1.2rem;
+  font-size: 1.5rem;
   color: aliceblue;
   text-decoration: none;
   font-weight: 500;
-  margin-left: 2.5rem;
+  margin-left: 2.7rem;
 }
 #check{
   display: none;
 }
-
 .icons{
   position: absolute;
   right: 5%;
@@ -76,7 +76,7 @@ body, html {
     height: 0;
     overflow: hidden;
     background: rgba(0, 0, 0, 0.24);
-    backdrop-filter: blur(10px);
+    backdrop-filter: blur(20px);
     transition: .3s ease;
   }
   #check:checked~.navbar{
@@ -91,79 +91,69 @@ body, html {
   }
 }
 
+
+/* content section */
 .content-section {
-  bottom: 0;
-  /* Take up the remaining height */
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  margin-left: 5%;
+  margin-right: 5%;
+
 }
 .text{
-  display: flex;
-  font-size: 65px;
+  padding-top: 3%;
+  padding-bottom:1%;
+  font-size: clamp(25px,2vw,45px);
   font-family: 'ISOCTEUR', sans-serif;
   font-weight: 500;
+  
   color:rgb(255, 255, 255);
-  justify-content: center;
-  align-items: center;
   letter-spacing: 3px;
-
-  width: 100%; /* Ensure content fills the container width */
-    white-space: nowrap; /* Prevent text wrapping */
-    word-wrap: break-word;
+  word-wrap: break-word;
+}
+@media (max-width: 725px){
+  .text{
+    text-align: center;
+  }
+  .content{
+    flex-direction: column;
+    align-items: center;
+    width:100%;
+    
+    border: 2px solid red;
+  }
+  .box{
+    display: flex;
+    height: 10px;
+    border: 2px solid red;
+    padding-left: 20%;
+    padding-right: 20%;
+    padding-top: 0vh;
+    padding-bottom: 0vh;
+    margin-bottom: 5%;
+    overflow: hidden;
+  }
 }
 .content {
   display: flex;
   justify-content: space-between;
-  width: 90%; /* Adjust as needed */
 }
 
 .box {
+  text-align: center;
+  display: block;
+  place-content: center;
   width: 30%; /* Adjust as needed */
-  height: 75vh; /* Adjust as needed */
-  background-color: #36323259; /* Sample background color */
+  padding-top: 10vh;
+  padding-bottom: 10vh;
+  background-color: rgba(0, 0, 0, 0.5); /* Sample background color */
   backdrop-filter: blur(10px);
 
   font-family: 'ISOCTEUR', sans-serif;
   font-size: 35px;
-  text-align: center;
   color: white;
   letter-spacing: 3px;
   font-weight: lighter;
-
-  white-space: nowrap; /* Prevent text wrapping */
-  word-wrap: break-word;
-
-}
-.DT{
-  background-color: #313131;
-  backdrop-filter: blur(5px);
- 
-  height: 700px; /* Adjust as needed */
-}
-
-
-
-.ann{
-  padding: 50px 100px;
-  position: absolute;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-color: #313131;
-  color: white;
-  border: none;
-  border-radius: 5px;
- 
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-
-  font-family: 'ISOCTEUR', sans-serif;
-  font-size: 80px;
-  font-weight: 1000;
-  letter-spacing: 3px;
-
-  
+ overflow: hidden;
+   border-radius: 50px;
 }
 
 .box:hover {
@@ -174,34 +164,16 @@ body, html {
 }
 
 h1{
-  font-size: 60px;
+  font-size: clamp(25px,2vw,45px);
   font-weight: lighter;
-  padding-top: 150px;
-  text-overflow: ellipsis;
-  overflow: hidden;
 }
 h2{
   font-size: 25px;
   font-weight: lighter;
-  text-overflow: ellipsis;
-  overflow: hidden;
   letter-spacing: 0.01px;
 }
 h3{
   font-size: 30px;
   font-weight: lighter;
-  text-overflow: ellipsis;
-  overflow: hidden;
-}
-.black{
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
- 
-}
-.back{
-  filter:grayscale(100%)
-}
-.back:hover{
-  filter: grayscale(0);
+  word-wrap: break-word;
 }
