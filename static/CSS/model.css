@@ -35,7 +35,7 @@ body, html {
   font-size: 2rem;
   color: aliceblue;
   text-decoration: none;
-
+  cursor: pointer;
 }
 .navbar a{
   font-size: 1.5rem;
@@ -44,6 +44,11 @@ body, html {
   font-weight: 500;
   margin-left: 2.7rem;
 }
+.navbar a:hover{
+  color: aqua;
+}
+
+
 #check{
   display: none;
 }
@@ -89,6 +94,10 @@ body, html {
     margin: 1.5rem 0;
     text-align: center;
   }
+  .navbar a:hover{
+    color: aqua;
+  }
+  
 }
 
 
@@ -117,43 +126,44 @@ body, html {
     flex-direction: column;
     align-items: center;
     width:100%;
-    
-    border: 2px solid red;
   }
   .box{
     display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
     height: 10px;
-    border: 2px solid red;
+
     padding-left: 20%;
     padding-right: 20%;
-    padding-top: 0vh;
-    padding-bottom: 0vh;
     margin-bottom: 5%;
-    overflow: hidden;
+  }
+  /* h2{
+    display: none;
+  } */
+  h3{
+    display: none;
   }
 }
 .content {
   display: flex;
   justify-content: space-between;
+  margin-top: 5%;
 }
 
 .box {
   text-align: center;
-  display: block;
-  place-content: center;
   width: 30%; /* Adjust as needed */
   padding-top: 10vh;
   padding-bottom: 10vh;
-  background-color: rgba(0, 0, 0, 0.5); /* Sample background color */
+  background-color: rgba(0, 0, 0, 0.596); /* Sample background color */
   backdrop-filter: blur(10px);
 
   font-family: 'ISOCTEUR', sans-serif;
-  font-size: 35px;
+
   color: white;
-  letter-spacing: 3px;
-  font-weight: lighter;
- overflow: hidden;
-   border-radius: 50px;
+  overflow: hidden;
+  border-radius: 50px;
 }
 
 .box:hover {
@@ -164,16 +174,15 @@ body, html {
 }
 
 h1{
-  font-size: clamp(25px,2vw,45px);
+  font-size: clamp(30px,2vw,45px);
   font-weight: lighter;
 }
 h2{
-  font-size: 25px;
+  font-size: clamp(20px,2vw,30px);
   font-weight: lighter;
   letter-spacing: 0.01px;
 }
 h3{
-  font-size: 30px;
+  font-size: clamp(20px,2vw,30px);
   font-weight: lighter;
-  word-wrap: break-word;
 }
