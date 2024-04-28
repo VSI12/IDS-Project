@@ -47,8 +47,6 @@ body, html {
 .navbar a:hover{
   color: aqua;
 }
-
-
 #check{
   display: none;
 }
@@ -97,7 +95,6 @@ body, html {
   .navbar a:hover{
     color: aqua;
   }
-  
 }
 
 
