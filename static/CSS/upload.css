@@ -1,7 +1,7 @@
 body {
     margin: 0;
     padding: 0;
-    background: linear-gradient(rgba(10, 10, 10, 0.267),rgba(0,0,0,.9)), repeating-linear-gradient(0, transparent, transparent 2px, rgba(0, 0, 0, 0.363) 3px, black 3px),
+    background: linear-gradient(rgba(87, 86, 86, 0.267),rgba(0,0,0,.9)), repeating-linear-gradient(0, transparent, transparent 2px, rgba(0, 0, 0, 0.363) 3px, black 3px),
 		url(images/Untitled.png);
     background-repeat: no-repeat;
     background-position: center;
@@ -19,185 +19,178 @@ body {
     height: 100%;
   }
   
-  .black-section {
-    background-color: black;
-    height: 10%;
+ /* nav bar */
+.black-section {
+  background-color: rgba(0, 0, 0, 0.3);
+  max-width: 90%;
+  padding: 1.3rem 5%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: 'ISOCTEUR', sans-serif;
+  z-index: 100;
+}
+.logo{
+  font-size: 3rem;
+  color: aliceblue;
+  text-decoration: none;
+  cursor: pointer;
+}
+.navbar a{
+  font-size: 1.5rem;
+  color: aliceblue;
+  text-decoration: none;
+  font-weight: 500;
+  margin-left: 2.7rem;
+}
+.navbar a:hover{
+  color: aqua;
+}
+#check{
+  display: none;
+}
+.icons{
+  position: absolute;
+  right: 5%;
+  color: aliceblue;
+  font-size: 3rem;
+  cursor: pointer;
+  display: none;
+}
+@media (max-width: 740px ){
+  .icons{
+    display: inline-flex;
   }
+  #check:checked~.icons #menu{
+    display: none;
+  }
+  #check:checked~.icons #close{
+    display: inline-flex;
+  }
+  .icons #close{
+    display: none;
+  }
+  .navbar{
+    position: absolute;
+    top: 9vh;
+    left: 0;
+    width: 100%;
+    height: 0;
+    overflow: hidden;
+    background: rgba(0, 0, 0, 0.24);
+    backdrop-filter: blur(20px);
+    transition: .3s ease;
+  }
+  #check:checked~.navbar{
+    height: 17.7rem;
+    z-index: 100;
+  }
+  .navbar a{
+    display: block;
+    font-size: 1.1rem;
+    margin: 1.5rem 0;
+    text-align: center;
+  }
+  .navbar a:hover{
+    color: aqua;
+  }
+}
+
   
-  .content-section {
-    height: 90%; /* Take up the remaining height */
+.content-section {
+  margin-left: 5%;
+  margin-right: 5%;
+}
+  .content {
     display: flex;
     justify-content: center;
-    align-items: center;
+    margin-top: 3%;
   }
   
   .box {
-    
-    
-    background-color: #00000059; /* Sample background color */
+    text-align: center;
+    padding-top: 5vh;
+    padding-bottom: 10vh;
+    background-color: rgba(0, 0, 0, 0.596); /* Sample background color */
     backdrop-filter: blur(10px);
-
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-
-    
-    white-space: nowrap; /* Prevent text wrapping */
-    word-wrap: break-word;
-    min-width: auto;
   
     font-family: 'ISOCTEUR', sans-serif;
-    font-size: 30px;
-    text-align: center;
-    font-weight: 50;
+  
     color: white;
-    letter-spacing: 3px;
+    overflow: hidden;
+    border-radius: 50px;
   }
-  .click{
-    width: 100%;
-  }
-
-  .text{
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-
-
-    width: 100%;
-    white-space: nowrap; /* Prevent text wrapping */
-    word-wrap: break-word;
-
-    font-size: 70px;
+#icon{
+  font-size: 4rem;
+}
+.text{
+    padding-top: 2%;
+    padding-bottom:0%;
+    font-size: clamp(25px,2.5vw,45px);
     font-family: 'ISOCTEUR', sans-serif;
     font-weight: 500;
-    color:rgb(255, 255, 255);
     
+    color:rgb(255, 255, 255);
     letter-spacing: 3px;
-  }
-
-  .black{
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-   
-  }
-
+    word-wrap: break-word;
+}
 .red{
-  font-size: 35px;
+  font-size: clamp(25px, 1.7vw,30px);
     color: red;
-    padding-top: 50px;
     font-weight: 50;
-    margin-left:20px;
+    padding-left: 5%;
+    padding-right: 5%;
 }
 .dt{
-  font-size: 30px;
-    font-weight: 50;
-    padding-top: 35px;
+  font-size: clamp(20px, 1.5vw,25px);
+  font-weight: 50;
+  padding-top: 35px;
+  padding-left: 5%;
+  padding-right: 5%;
 }
-
-.select{
-  background-color: #000000;
-  font-size: 20px;
-  font-family: 'ISOCTEUR', sans-serif;
-  
-}
-
-
 
 input[type="submit"] {
     padding: 10px 10px; 
-    
-
-    background: #8c9292;
-    padding: 10px 20px;
+    /* padding: 10px 20px; */
     border-radius: 5px;
-    color: #000000;
-    background: #8c9292; 
+    color: #ffffff;
+    background: #313132;
     border: none; 
     cursor: pointer; 
     font-size: 15px;
     font-family: 'ISOCTEUR', sans-serif;
     transition: background-color 0.3s ease;
-    font-weight: bold;
+    font-weight: 500;
     text-transform: uppercase;
   
   
 }
 input[type="submit"]:hover {
     background-color:aqua;
-}
+    color: #000;
+    font-weight: 800;
 
-.choose{
-  font-size: 35px;
-  font-weight: 100;
 }
-
-.back{
-  filter:grayscale(100%)
-}
-.back:hover{
-  filter: grayscale(0);
-}
-
-
 
 
 input[type=file]::file-selector-button {
   margin-right: 20px;
   border: none;
   font-family: 'ISOCTEUR', sans-serif;
-  font-weight: bold;
+  font-weight: 500;
   text-transform: uppercase;
-
-  background: #8c9292;
+  font-size: 15px;
+  background: #313132;
   padding: 10px 20px;
   border-radius: 5px;
-  color: #000000;
+  color: #ffffff;
   cursor: pointer;
   transition: background .2s ease-in-out;
 }
 
 input[type=file]::file-selector-button:hover {
   background: rgb(0, 255, 255);
+  color: #000;
+  font-weight: 800;
 }
 
-/*input[type=submit]{
-  color: #444;
-}*/
-
-.drop-container {
-  position: relative;
-  display: flex;
-  gap: 10px;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  height: 200px;
-  width: 100%;
-  
-  border-radius: 10px;
-  border: 5px dashed #555;
-  color: #444;
-  cursor: pointer;
-  transition: background .2s ease-in-out, border .2s ease-in-out;
-}
-
-.drop-container:hover {
-  background: #000000;
-  border-color:aqua;
-  color: aqua;
-}
-
-.drop-container:hover .drop-title {
-  color: #222;
-}
-
-.drop-title {
-  color: #9c9292;
-  font-size: 20px;
-  font-weight: bold;
-  text-align: center;
-  transition: color .2s ease-in-out;
-}
