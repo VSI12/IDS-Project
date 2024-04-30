@@ -104,6 +104,9 @@ def process():
 
     if route_accessed["upload_DecisionTree"] == True:
             from intrusion_detection import DecisionTree
+            print(route_accessed)
+            route_accessed["upload_DecisionTree"]=False
+            print(route_accessed)
 
             #load the trained model
             with open('IDS_model_DECISION TREE CLASSIFIER.pkl', "rb") as file:
@@ -135,9 +138,12 @@ def process():
             # return render_template('result.html', confusion_matrix=img_base64, results=results)
 
     elif route_accessed["upload_KNN"] == True:
-             from intrusion_detection import KNN
+            from intrusion_detection import KNN
+            print(route_accessed)
+            route_accessed["upload_KNN"]=False
+            print(route_accessed)
             #load the trained model
-             with open('IDS_model_KNN.pkl', "rb") as file:
+            with open('IDS_model_KNN.pkl', "rb") as file:
                 clf = pickle.load(file)
 
                 confusion_matrixKNN = KNN()
@@ -164,8 +170,12 @@ def process():
                 # Return data as JSON
                 return jsonify({'confusion_matrix': img_base64, 'results': results})
 
-    else:
+    elif route_accessed["upload_NaiveBayes"] == True:
             from intrusion_detection import NaiveBayes
+            print(route_accessed)
+            route_accessed["upload_NaiveBayes"]=False
+            print(route_accessed)
+
             confusion_matrixNaiveBayes = NaiveBayes()
             #load the trained model
             with open('IDS_model_NaiveBayes.pkl', "rb") as file:
