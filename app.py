@@ -78,10 +78,7 @@ def submit():
     file.save("dataset.csv")
     load_dataset('dataset.csv')
 
-    
-    # Generate a timestamp
-    timestamp = datetime.now().strftime("%Y-%m-%d_%H.%M.%S")
-
+    executor.submit(process,file)
    
     if request.method == 'POST':
         #check for if file is empty
@@ -98,9 +95,14 @@ def submit():
         if df.empty:
             return "Error: Uploaded file is empty"
         
+    
+    return render_template('result.html')
 
+def process():
+ # Generate a timestamp
+    timestamp = datetime.now().strftime("%Y-%m-%d_%H.%M.%S")
 
-        if route_accessed["upload_DecisionTree"] == True:
+    if route_accessed["upload_DecisionTree"] == True:
             from intrusion_detection import DecisionTree
 
             #load the trained model
@@ -128,9 +130,11 @@ def submit():
                 shutil.move(filename, os.path.join(confusion_matrix_decisionTree, filename))
 
             os.remove('dataset.csv')  # Remove uploaded file
-            return render_template('result.html', confusion_matrix=img_base64, results=results)
+            # Return data as JSON
+            return jsonify({'confusion_matrix': img_base64, 'results': results})
+            # return render_template('result.html', confusion_matrix=img_base64, results=results)
 
-        elif route_accessed["upload_KNN"] == True:
+    elif route_accessed["upload_KNN"] == True:
              from intrusion_detection import KNN
             #load the trained model
              with open('IDS_model_KNN.pkl', "rb") as file:
@@ -157,11 +161,10 @@ def submit():
                     shutil.move(filename, os.path.join(confusion_matrix_KNN, filename))
 
 
-                return render_template('result.html', confusion_matrix=img_base64,results=results)
+                # Return data as JSON
+                return jsonify({'confusion_matrix': img_base64, 'results': results})
 
-
-
-        else:
+    else:
             from intrusion_detection import NaiveBayes
             confusion_matrixNaiveBayes = NaiveBayes()
             #load the trained model
@@ -189,14 +192,12 @@ def submit():
                 if os.path.exists(filename):
                     shutil.move(filename, os.path.join(confusion_matrix_NaiveBayes, filename))
 
-                return render_template('result.html', confusion_matrix=img_base64, results=results)
+                # Return data as JSON
+                return jsonify({'confusion_matrix': img_base64, 'results': results})
 
-
-
-    return 'Well done! File uploaded sucessfully'
-
-
-    
+@app.route('/result')
+def result():
+    return process()
 
 if __name__ == '__main__':
     app.run(port=6500)
