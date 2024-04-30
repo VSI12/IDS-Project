@@ -19,10 +19,82 @@ body {
     height: 100%;
   }
   
-  .black-section {
-    background-color: black;
-    height: 10%;
+/* nav bar */
+.black-section {
+  background-color: rgba(0, 0, 0, 0.3);
+  max-width: 90%;
+  padding: 1.3rem 5%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: 'ISOCTEUR', sans-serif;
+  z-index: 100;
+}
+.logo{
+  font-size: 3rem;
+  color: aliceblue;
+  text-decoration: none;
+  cursor: pointer;
+}
+.navbar a{
+  font-size: 1.5rem;
+  color: aliceblue;
+  text-decoration: none;
+  font-weight: 500;
+  margin-left: 2.7rem;
+}
+.navbar a:hover{
+  color: aqua;
+}
+#check{
+  display: none;
+}
+.icons{
+  position: absolute;
+  right: 5%;
+  color: aliceblue;
+  font-size: 3rem;
+  cursor: pointer;
+  display: none;
+}
+@media (max-width: 740px ){
+  .icons{
+    display: inline-flex;
   }
+  #check:checked~.icons #menu{
+    display: none;
+  }
+  #check:checked~.icons #close{
+    display: inline-flex;
+  }
+  .icons #close{
+    display: none;
+  }
+  .navbar{
+    position: absolute;
+    top: 9vh;
+    left: 0;
+    width: 100%;
+    height: 0;
+    overflow: hidden;
+    background: rgba(0, 0, 0, 0.24);
+    backdrop-filter: blur(20px);
+    transition: .3s ease;
+  }
+  #check:checked~.navbar{
+    height: 17.7rem;
+    z-index: 100;
+  }
+  .navbar a{
+    display: block;
+    font-size: 1.1rem;
+    margin: 1.5rem 0;
+    text-align: center;
+  }
+  .navbar a:hover{
+    color: aqua;
+  }
+}
   .content-section {
     height: 90%; /* Take up the remaining height */
     display: flex;
@@ -84,3 +156,14 @@ body {
     
     letter-spacing: 3px;
   }
+
+  /* preloader animation */
+.loader{
+  background: #000000 url(images/Loader.gif) no-repeat center;
+  background-size: 14%;
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  z-index: 100;
+  display: none;
+}

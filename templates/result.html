@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Upload DataSet</title>
-    <link rel="icon" type="image/x-icon" href="static/CSS/images/file.png">
-    <link rel="stylesheet" type="text/css" href="static/CSS/results.css"> 
+    <link rel="icon" type="image/x-icon" href="../static/CSS/images/file.png">
+    <link rel="stylesheet" type="text/css" href="../static/CSS/results.css"> 
     <link href="https://fonts.cdnfonts.com/css/isocteur" rel="stylesheet">
     <style>
         @import url('https://fonts.cdnfonts.com/css/isocteur');
@@ -14,7 +14,9 @@
     </style>
 </head>
 <body>
+  <div class="loader" id="loader"></div>
     <div class="container">
+      
       <div class="black-container">
         <section class="black-section">
          <div class="black">
@@ -27,15 +29,13 @@
          </div>
         </section>
      </div>
-      <section class="content-section">
+      <section class="results">
             <div class="box">
-              <div class="text_under">
-               {{results}}
-              </div>
+              
             <div style="padding-bottom: 50px;"></div>
-              <div>
-                <img src="data:image/png;base64,{{ confusion_matrix }}" alt="Confusion Matrix">
-            </div>
+              <div id="confusionMatrix">
+                <!-- <img src="data:image/png;base64,{{ confusion_matrix }}" alt="Confusion Matrix"> -->
+              </div>
             </div>
           
       </section>
