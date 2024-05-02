@@ -135,9 +135,6 @@ body, html {
     padding-right: 20%;
     margin-bottom: 5%;
   }
-  /* h2{
-    display: none;
-  } */
   h3{
     display: none;
   }
@@ -169,7 +166,9 @@ body, html {
   transition: background-color 0.3s ease;
   color:aqua
 }
-
+a{
+  text-decoration: none;
+}
 h1{
   font-size: clamp(30px,3vw,50px);
   font-weight: lighter;
