@@ -95,7 +95,6 @@ def submit():
         if df.empty:
             return "Error: Uploaded file is empty"
         
-    
     return render_template('result.html')
 
 def process():
@@ -107,12 +106,34 @@ def process():
             print(route_accessed)
             route_accessed["upload_DecisionTree"]=False
             print(route_accessed)
-
+            
+            
             #load the trained model
             with open('IDS_model_DECISION TREE CLASSIFIER.pkl', "rb") as file:
                 clf = pickle.load(file)
 
-            confusion_matrixDecisionTreeClassifier = DecisionTree()
+            confusion_matrixDecisionTreeClassifier,metrics = DecisionTree()
+
+            #performance metrics
+            accuracy = metrics['Accuracy']
+            Accuracy ="ACCURACY: %0.5f (+/- %0.5f)" % (accuracy.mean(), accuracy.std() * 2)
+
+            precision = metrics['Precision']
+            Precision = "PRECISION: %0.5f (+/- %0.5f)" % (precision.mean(), precision.std() * 2)
+
+            recall = metrics['Recall']
+            Recall = "RECALL: %0.5f (+/- %0.5f)" % (recall.mean(), recall.std() * 2)
+
+            f = metrics['F-measure']
+            Fm = "F-MEASURE: %0.5f (+/- %0.5f)" % (f.mean(), f.std() * 2)
+
+            Train = metrics['Train']
+            Train_time = "TRAIN TIME:%.3fs\n" %Train
+
+            test = metrics['Test']
+            Test_time = "TEST TIME:%.3fs\n" %test
+
+
             # Save confusion matrix plot
             plt.figure(figsize=(8, 6))
             sns.heatmap(confusion_matrixDecisionTreeClassifier, annot=True, fmt='d', cmap='Blues')
@@ -121,7 +142,7 @@ def process():
             results = "CONFUSION MATRIX FOR THE DECISION TREE MODEL"
             #plt.tight_layout()
 
-             #define the new file name with the timestamp
+            #define the new file name with the timestamp
             filename = f'confusion_matrixDecisionTree({timestamp}).png'
             plt.savefig(filename)
 
@@ -134,7 +155,7 @@ def process():
 
             os.remove('dataset.csv')  # Remove uploaded file
             # Return data as JSON
-            return jsonify({'confusion_matrix': img_base64, 'results': results})
+            return jsonify({'confusion_matrix': img_base64, 'results': results, 'Accuracy': Accuracy, 'Precision': Precision, 'Recall': Recall, 'Fm':Fm,'Train':Train_time, 'Test':Test_time})
             # return render_template('result.html', confusion_matrix=img_base64, results=results)
 
     elif route_accessed["upload_KNN"] == True:
@@ -146,7 +167,26 @@ def process():
             with open('IDS_model_KNN.pkl', "rb") as file:
                 clf = pickle.load(file)
 
-                confusion_matrixKNN = KNN()
+                confusion_matrixKNN,metrics = KNN()
+                 #performance metrics
+                accuracy = metrics['Accuracy']
+                Accuracy ="ACCURACY: %0.5f (+/- %0.5f)" % (accuracy.mean(), accuracy.std() * 2)
+
+                precision = metrics['Precision']
+                Precision = "PRECISION: %0.5f (+/- %0.5f)" % (precision.mean(), precision.std() * 2)
+
+                recall = metrics['Recall']
+                Recall = "RECALL: %0.5f (+/- %0.5f)" % (recall.mean(), recall.std() * 2)
+
+                f = metrics['F-measure']
+                Fm = "F-MEASURE: %0.5f (+/- %0.5f)" % (f.mean(), f.std() * 2)
+
+                Train = metrics['Train']
+                Train_time = "TRAIN TIME:%.3fs\n" %Train
+
+                test = metrics['Test']
+                Test_time = "TEST TIME:%.3fs\n" %test
+
                  # Save confusion matrix plot
                 plt.figure(figsize=(8, 6))
                 sns.heatmap(confusion_matrixKNN, annot=True, fmt='d', cmap='Blues')
@@ -168,7 +208,7 @@ def process():
 
 
                 # Return data as JSON
-                return jsonify({'confusion_matrix': img_base64, 'results': results})
+                return jsonify({'confusion_matrix': img_base64, 'results': results, 'Accuracy': Accuracy, 'Precision': Precision, 'Recall': Recall, 'Fm':Fm,'Train':Train_time, 'Test':Test_time})
 
     elif route_accessed["upload_NaiveBayes"] == True:
             from intrusion_detection import NaiveBayes
@@ -176,7 +216,26 @@ def process():
             route_accessed["upload_NaiveBayes"]=False
             print(route_accessed)
 
-            confusion_matrixNaiveBayes = NaiveBayes()
+            confusion_matrixNaiveBayes,metrics = NaiveBayes()
+             #performance metrics
+            accuracy = metrics['Accuracy']
+            Accuracy ="ACCURACY: %0.5f (+/- %0.5f)" % (accuracy.mean(), accuracy.std() * 2)
+
+            precision = metrics['Precision']
+            Precision = "PRECISION: %0.5f (+/- %0.5f)" % (precision.mean(), precision.std() * 2)
+
+            recall = metrics['Recall']
+            Recall = "RECALL: %0.5f (+/- %0.5f)" % (recall.mean(), recall.std() * 2)
+
+            f = metrics['F-measure']
+            Fm = "F-MEASURE: %0.5f (+/- %0.5f)" % (f.mean(), f.std() * 2)
+
+            Train = metrics['Train']
+            Train_time = "TRAIN TIME:%.3fs\n" %Train
+
+            test = metrics['Test']
+            Test_time = "TEST TIME:%.3fs\n" %test
+
             #load the trained model
             with open('IDS_model_NaiveBayes.pkl', "rb") as file:
                 clf = pickle.load(file)
@@ -203,8 +262,10 @@ def process():
                     shutil.move(filename, os.path.join(confusion_matrix_NaiveBayes, filename))
 
                 # Return data as JSON
-                return jsonify({'confusion_matrix': img_base64, 'results': results})
+                return jsonify({'confusion_matrix': img_base64, 'results': results, 'Accuracy': Accuracy, 'Precision': Precision, 'Recall': Recall, 'Fm':Fm,'Train':Train_time, 'Test':Test_time})
 
+    else:
+        return render_template("model.html")
 @app.route('/result')
 def result():
     return process()
