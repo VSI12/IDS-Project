@@ -69,7 +69,7 @@ def upload_NaiveBayes():
     return render_template('upload.html', form=form)
 
 
-@app.route('/submit', methods=['POST'])
+@app.route('/results', methods=['POST'])
 def submit():
     from intrusion_detection import load_dataset, col_names,confusion_matrix,categorical_columns
 
