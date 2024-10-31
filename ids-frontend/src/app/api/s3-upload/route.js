@@ -22,6 +22,10 @@ async function uploadFileToS3(file, fileName) {
         ContentType: 'text/csv'
     };
 
+    const command = new PutObjectCommand(params);
+    const response = await s3client.send(command);
+    console.log(response);
+
 }
 
 
