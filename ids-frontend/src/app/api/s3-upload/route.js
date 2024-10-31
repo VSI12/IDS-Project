@@ -17,7 +17,7 @@ async function uploadFileToS3(file, fileName) {
 
     const params = {
         Bucket: process.env.AWS_BUCKET_NAME,
-        Key: `Network-Data${fileName}-${Date.now()}`,
+        Key: `Network Data/${fileName}-${Date.now()}`,
         Body: fileBuffer,
         ContentType: 'text/txt'
     };
