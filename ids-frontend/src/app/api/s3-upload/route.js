@@ -17,21 +17,16 @@ async function uploadFileToS3(file, fileName) {
 
     const params = {
         Bucket: process.env.AWS_BUCKET_NAME,
-        Key: `${fileName}-${Date.now()}`,
+        Key: `Network-Data${fileName}-${Date.now()}`,
         Body: fileBuffer,
-        ContentType: 'text/csv'
+        ContentType: 'text/txt'
     };
 
     const command = new PutObjectCommand(params);
     const response = await s3client.send(command);
-    console.log(response);
+    return fileName
 
 }
-
-
-
-
-
 
 
 export async function POST(request) {
