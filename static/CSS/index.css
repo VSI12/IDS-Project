@@ -371,9 +371,6 @@ p{
 }
 
 
-
-
-
 @keyframes slideIn {
   from {
     transform: translateX(100%); /* Start off screen */
@@ -747,3 +744,4 @@ p{
     transform: skew(8deg);
   }
 }
+
