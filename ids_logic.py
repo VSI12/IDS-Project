@@ -95,11 +95,7 @@ def DecisionTree(new_data):
     fig, ax = plt.subplots()
     label_counts.plot(kind='bar', ax=ax, title='Distribution of Predictions')
     label_counts.plot(kind='bar', title='Distribution of Predictions')
-    # plt.xlabel('Attack Type')
-    # plt.ylabel('Count')
-    # plt.xticks(rotation=45)
-    # plt.show()
-
+   
     ax.set_xlabel('Attack Type')
     ax.set_ylabel('Count')
     ax.set_xticklabels(ax.get_xticklabels(), rotation=45)
