@@ -68,6 +68,12 @@ def upload_NaiveBayes():
     form = UploadFileForm()
     return render_template('upload.html', form=form)
 
+@app.route("/upload_RandomForest")
+def upload_NaiveBayes():
+    route_accessed["upload_RandomForest"] = True
+    form = UploadFileForm()
+    return render_template('upload.html', form=form)
+
 
 @app.route('/results', methods=['POST'])
 def submit():
@@ -128,14 +134,25 @@ def process():
             return jsonify({'confusion_matrix': img_base64})
             
     elif route_accessed["upload_NaiveBayes"] == True:
-            from ids_logic import RandomForest
+            from ids_logic import modelGNB
             route_accessed["upload_KNN"]=False
             route_accessed["upload_DecisionTree"]=False
-            img_base64 = RandomForest(processed_data)
+            img_base64 = modelGNB(processed_data)
             
             os.remove('dataset.csv')  # Remove uploaded file
             # Return data as JSON
             return jsonify({'confusion_matrix': img_base64})
+    
+    elif route_accessed["upload_RandomForest"] == True:
+            from ids_logic import modelRFC
+            route_accessed["upload_KNN"]=False
+            route_accessed["upload_DecisionTree"]=False
+            img_base64 = modelRFC(processed_data)
+            
+            os.remove('dataset.csv')  # Remove uploaded file
+            # Return data as JSON
+            return jsonify({'confusion_matrix': img_base64})
+    
     else:
         return render_template("model.html")
 @app.route('/result')
