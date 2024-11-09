@@ -8,7 +8,7 @@ import shutil
 
 from concurrent.futures import ThreadPoolExecutor
 from datetime import datetime
-from flask import Flask, flash, session, render_template,request,redirect, url_for, jsonify
+from flask import Flask, flash, render_template, request, redirect, url_for, jsonify
 from flask_wtf import FlaskForm
 from wtforms import FileField, SubmitField
 from werkzeug.utils import secure_filename
@@ -24,14 +24,15 @@ route_accessed = {"upload_KNN": False, "upload_DecisionTree": False, "upload_Nai
 
 #for generating the foilders for the confusion matrices
 confusion_matrix_folder = 'Confusion Matrices'
-confusion_matrix_decisionTree = 'Confusion Matrices/Confusion Matrices Decision Tree'
+confusion_matrix_decisionTree = 'Confusion Matrices/Confusion Matrices DecisionTree'
 confusion_matrix_KNN = 'Confusion Matrices/Confusion Matrices KNN'
 confusion_matrix_NaiveBayes = 'Confusion Matrices/confusion Matrices NaiveBayes'
+confusion_matrix_RandomForest = 'Confusion Matrices/confusion Matrices RandomForest'
 
 if not os.path.exists(confusion_matrix_folder):
     os.makedirs(confusion_matrix_folder)
 
-confusion_matrices_directories = [confusion_matrix_decisionTree,confusion_matrix_KNN,confusion_matrix_NaiveBayes]
+confusion_matrices_directories = [confusion_matrix_decisionTree,confusion_matrix_KNN,confusion_matrix_NaiveBayes,confusion_matrix_RandomForest]
 for x in confusion_matrices_directories:
     if not os.path.exists(x):
         os.makedirs(x)
