@@ -49,23 +49,15 @@ label_mapping = {
 }
 
 def preprocess(dataset):
+    from model import X_columns
     new_data = pd.read_csv(dataset, header=None, names=col_names)
 
-    new_data = new_data.drop(columns=["label"])  # Replace "target" with your target column name
-
-    # Encode categorical columns in X if any
     new_data = pd.get_dummies(new_data)
-
-    # Align the columns of new_data to match the trained model's features
-
-    new_data.head(5) 
-    new_data = pd.get_dummies(new_data)
-
-
-    new_data.head(5)
-    new_data.columns = new_data.columns.astype(str)
+    new_data = new_data.reindex(columns = X_columns, fill_value=0)
 
     return new_data
+
+
 #DECISION TREE CLASSIFIER
 def DecisionTree(new_data):
     #DECISION TREE CLASSIFIER
@@ -73,9 +65,7 @@ def DecisionTree(new_data):
     print(predictions)
     predicted_labels = [label_mapping.get(pred, "Unknown") for pred in predictions]
 # Create a DataFrame for better visualization
-    results_df = pd.DataFrame({
-    'Predicted Label': predicted_labels
-})
+    results_df = pd.DataFrame({'Predicted Label': predicted_labels})
 
     # Count the occurrences of each label
     label_counts = results_df['Predicted Label'].value_counts()
