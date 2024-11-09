@@ -135,3 +135,28 @@ def KNN(new_data):
         img_base64 = base64.b64encode(img_file.read()).decode('utf-8')
 
     return img_base64
+
+def GaussianNB(new_data):
+    timestamp = datetime.now().strftime("%Y-%m-%d_%H.%M.%S")
+    predictions = modelGNB.predict(new_data)
+    predicted_labels = [label_mapping.get(pred, "Unknown") for pred in predictions]
+
+    # Create a DataFrame for better visualization
+    results_df = pd.DataFrame({'Predicted Label': predicted_labels})
+    label_counts = results_df['Predicted Label'].value_counts()
+
+    # Plotting the distribution of predictions
+    fig, ax = plt.subplots()
+    label_counts.plot(kind='bar', ax=ax, title='Distribution of Predictions')
+    ax.set_xlabel('Attack Type')
+    ax.set_ylabel('Count')
+    ax.set_xticklabels(ax.get_xticklabels(), rotation=45)
+
+    filename = f'plot_DecisionTree({timestamp}).png'
+    fig.savefig(filename)
+
+    #Convert plot to base64 for display in HTML
+    with open(filename, 'rb') as img_file:
+        img_base64 = base64.b64encode(img_file.read()).decode('utf-8')
+
+    return img_base64
