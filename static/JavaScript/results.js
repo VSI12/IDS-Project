@@ -11,14 +11,14 @@ document.addEventListener("DOMContentLoaded", function() {
                 <h2>${data.results}</h2>
                 <img src="data:image/png;base64,${data.confusion_matrix}" alt="Confusion Matrix">
             `;
-            document.getElementById("metrics").innerHTML = `
-                <h1>${data.Accuracy}</h1>
-                <h1>${data.Precision}</h1>
-                <h1>${data.Recall}</h1>
-                <h1>${data.Fm}</h1>
-                <h1>${data.Train}</h1>
-                <h1>${data.Test}</h1>
-            `;
+            // document.getElementById("metrics").innerHTML = `
+            //     <h1>${data.Accuracy}</h1>
+            //     <h1>${data.Precision}</h1>
+            //     <h1>${data.Recall}</h1>
+            //     <h1>${data.Fm}</h1>
+            //     <h1>${data.Train}</h1>
+            //     <h1>${data.Test}</h1>
+            // `;
             // Hide loading spinner
             document.getElementById("loader").style.display = "none";
         })

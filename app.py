@@ -114,8 +114,6 @@ def process():
             print(route_accessed)
             img_base64 = DecisionTree(processed_data)
             
-
-           
             os.remove('dataset.csv')  # Remove uploaded file
             # Return data as JSON
             return jsonify({'confusion_matrix': img_base64})
@@ -130,38 +128,9 @@ def process():
             with open('IDS_model_KNN.pkl', "rb") as file:
                 clf = pickle.load(file)
 
-                confusion_matrixKNN,metrics = KNN()
-                 #performance metrics
-                accuracy = metrics['Accuracy']
-                Accuracy ="ACCURACY: %0.5f (+/- %0.5f)" % (accuracy.mean(), accuracy.std() * 2)
+                
 
-                precision = metrics['Precision']
-                Precision = "PRECISION: %0.5f (+/- %0.5f)" % (precision.mean(), precision.std() * 2)
-
-                recall = metrics['Recall']
-                Recall = "RECALL: %0.5f (+/- %0.5f)" % (recall.mean(), recall.std() * 2)
-
-                f = metrics['F-measure']
-                Fm = "F-MEASURE: %0.5f (+/- %0.5f)" % (f.mean(), f.std() * 2)
-
-                Train = metrics['Train']
-                Train_time = "TRAIN TIME:%.3fs\n" %Train
-
-                test = metrics['Test']
-                Test_time = "TEST TIME:%.3fs\n" %test
-
-                 # Save confusion matrix plot
-                plt.figure(figsize=(8, 6))
-                sns.heatmap(confusion_matrixKNN, annot=True, fmt='d', cmap='Blues')
-                plt.xlabel('Predicted Attacks')
-                plt.ylabel('Actual Attacks')
-                results = "CONFUSION MATRIX FOR THE KNN MODEL"
-                 #define the new file name with the timestamp
-                filename = f'confusion_matrixKNN({timestamp}).png'
-                plt.savefig(filename)
-                #plt.tight_layout()
-                plt.savefig(filename)
-
+                
                 # Convert plot to base64 for display in HTML
                 with open(filename, 'rb') as img_file:
                     img_base64 = base64.b64encode(img_file.read()).decode('utf-8')
