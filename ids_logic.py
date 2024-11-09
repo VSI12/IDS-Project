@@ -1,10 +1,12 @@
+import io
+import base64
 import pandas as pd
 import numpy as np
 import seaborn as sns
 import matplotlib.pyplot as plt
 
 from model import modelRFC, modelDTC, modelKNN, modelGNB
-
+from datetime import datetime
 from sklearn import preprocessing,metrics
 from sklearn.model_selection import train_test_split, cross_val_score
 from sklearn.preprocessing import LabelEncoder, OneHotEncoder, label_binarize
@@ -60,90 +62,32 @@ def preprocess(dataset):
 
 #DECISION TREE CLASSIFIER
 def DecisionTree(new_data):
-    #DECISION TREE CLASSIFIER
+    timestamp = datetime.now().strftime("%Y-%m-%d_%H.%M.%S")
     predictions = modelDTC.predict(new_data)
-    print(predictions)
     predicted_labels = [label_mapping.get(pred, "Unknown") for pred in predictions]
-# Create a DataFrame for better visualization
-    results_df = pd.DataFrame({'Predicted Label': predicted_labels})
 
-    # Count the occurrences of each label
+    # Create a DataFrame for better visualization
+    results_df = pd.DataFrame({'Predicted Label': predicted_labels})
     label_counts = results_df['Predicted Label'].value_counts()
 
     # Plotting the distribution of predictions
-    #Assuming `predictions` is your array of predicted labels
-    predicted_labels = [label_mapping.get(pred, "Unknown") for pred in predictions]
-    # Create a DataFrame for better visualization
-    results_df = pd.DataFrame({
-        'Predicted Label': predicted_labels
-    })
 
-    # Count the occurrences of each label
-    label_counts = results_df['Predicted Label'].value_counts()
 
     # Plotting the distribution of predictions
     fig, ax = plt.subplots()
     label_counts.plot(kind='bar', ax=ax, title='Distribution of Predictions')
-    label_counts.plot(kind='bar', title='Distribution of Predictions')
-   
     ax.set_xlabel('Attack Type')
     ax.set_ylabel('Count')
     ax.set_xticklabels(ax.get_xticklabels(), rotation=45)
-    return fig
 
-#NaiveBayes   
-# def NaiveBayes():
+  
+  
+    filename = f'plot_DecisionTree({timestamp}).png'
+    fig.savefig(filename)
 
-#     #NAIVEBAYES
-#     clf_Naive = GaussianNB()
-#     train0 = time.time()
-#     # Train Decision Tree Classifer
-#     clf_Naive = clf_Naive.fit(X_Df, Y_Df.astype(int))
-#     train1 = time.time() - train0
+    #Convert plot to base64 for display in HTML
+    with open(filename, 'rb') as img_file:
+        img_base64 = base64.b64encode(img_file.read()).decode('utf-8')
 
-#     test0 = time.time()
-#     Y_Df_pred=clf_Naive.predict(X_Df_test)
-#     test1 = time.time() - test0
-
-
-#     # Create confusion matrix
-#     confusion_matrixNaiveBayes = pd.crosstab(Y_Df_test, Y_Df_pred, rownames=['Actual attacks'], colnames=['Predicted attacks'])
-
-
-#     # Save trained model
-#     with open('IDS_model_NaiveBayes.pkl', 'wb') as file:
-#         pickle.dump(clf_Naive, file)
-#     return confusion_matrixNaiveBayes,{'Accuracy': accuracy,'Precision': precision,'Recall': recall,'F-measure': f,'Train':train1, 'Test':test1}
-    
-# #K-NEAREST NEIGHBOUR
-# def KNN():
-
-#     clf_KNN = KNeighborsClassifier()
-#     train0 = time.time()
-#     clf_KNN.fit(X_Df, Y_Df.astype(int))
-#     train1 = time.time() - train0
-
-#     #for the test dataset
-#     test0 = time.time()
-#     Y_pred = clf_KNN.predict((X_Df_test))
-#     test1 = time.time() - test0
-
-#     #confusion matrix
-#     confusion_matrixKNN = pd.crosstab(Y_Df_test, Y_pred, rownames=['Actual attacks'], colnames=['Predicted attacks'])
-
-#     #accuracy, precision, f-measure and train time scores
-#     accuracy = cross_val_score(clf_KNN, X_Df_test, Y_Df_test, cv=10, scoring='accuracy')
-#     print("Accuracy: %0.5f (+/- %0.5f)" % (accuracy.mean(), accuracy.std() * 2))
-#     precision = cross_val_score(clf_KNN, X_Df_test, Y_Df_test, cv=10, scoring='precision')
-#     print("Precision: %0.5f (+/- %0.5f)" % (precision.mean(), precision.std() * 2))
-#     recall = cross_val_score(clf_KNN, X_Df_test, Y_Df_test, cv=10, scoring='recall')
-#     print("Recall: %0.5f (+/- %0.5f)" % (recall.mean(), recall.std() * 2))
-#     f = cross_val_score(clf_KNN, X_Df_test, Y_Df_test, cv=10, scoring='f1')
-#     print("F-measure: %0.5f (+/- %0.5f)" % (f.mean(), f.std() * 2))
-#     print("train_time:%.3fs\n" %train1)
-#     print("test_time:%.3fs\n" %test1)
-
-#      # Save trained model
-#     with open('IDS_model_KNN.pkl', 'wb') as file:
-#         pickle.dump(clf_KNN, file)
-#     return confusion_matrixKNN,{'Accuracy': accuracy,'Precision': precision,'Recall': recall,'F-measure': f,'Train':train1, 'Test':test1}
+  
+    return img_base64

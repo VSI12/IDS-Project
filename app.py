@@ -8,7 +8,7 @@ import shutil
 
 from concurrent.futures import ThreadPoolExecutor
 from datetime import datetime
-from flask import Flask, flash, render_template,request,redirect, url_for, jsonify
+from flask import Flask, flash, session, render_template,request,redirect, url_for, jsonify
 from flask_wtf import FlaskForm
 from wtforms import FileField, SubmitField
 from werkzeug.utils import secure_filename
@@ -72,6 +72,7 @@ def upload_NaiveBayes():
 @app.route('/results', methods=['POST'])
 def submit():
     from ids_logic import preprocess
+    global processed_data
 # Get uploaded file from request
     file = request.files.get('file')
     if not file or file.filename == '':
@@ -84,7 +85,7 @@ def submit():
     try:
         # Preprocess the data (align columns, encode categorical features, etc.)
         processed_data = preprocess('dataset.csv')
-        
+
         # Check if preprocessed data is empty
         if processed_data.empty:
             return "Error: Processed dataset is empty", 400
@@ -95,7 +96,8 @@ def submit():
         return f"Error during preprocessing: {str(e)}", 500
 
     # Run further processing asynchronously
-    executor.submit(process, processed_data)
+    # executor.submit(process, processed_data)
+    print("uploaded")
         
     return render_template('result.html')
 
@@ -103,26 +105,20 @@ def process():
  # Generate a timestamp
     timestamp = datetime.now().strftime("%Y-%m-%d_%H.%M.%S")
     
+    # processed_data = session.get('processed_data')
 
     if route_accessed["upload_DecisionTree"] == True:
             from ids_logic import DecisionTree
             print(route_accessed)
             route_accessed["upload_DecisionTree"]=False
             print(route_accessed)
-            
+            img_base64 = DecisionTree(processed_data)
             
 
            
-            # Convert plot to base64 for display in HTML
-            with open(filename, 'rb') as img_file:
-                img_base64 = base64.b64encode(img_file.read()).decode('utf-8')
-
-            if os.path.exists(filename):
-                shutil.move(filename, os.path.join(confusion_matrix_decisionTree, filename))
-
             os.remove('dataset.csv')  # Remove uploaded file
             # Return data as JSON
-            return jsonify({'confusion_matrix': img_base64, 'results': results})
+            return jsonify({'confusion_matrix': img_base64})
             # return render_template('result.html', confusion_matrix=img_base64, results=results)
 
     elif route_accessed["upload_KNN"] == True:
