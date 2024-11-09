@@ -71,17 +71,12 @@ def DecisionTree(new_data):
     label_counts = results_df['Predicted Label'].value_counts()
 
     # Plotting the distribution of predictions
-
-
-    # Plotting the distribution of predictions
     fig, ax = plt.subplots()
     label_counts.plot(kind='bar', ax=ax, title='Distribution of Predictions')
     ax.set_xlabel('Attack Type')
     ax.set_ylabel('Count')
     ax.set_xticklabels(ax.get_xticklabels(), rotation=45)
 
-  
-  
     filename = f'plot_DecisionTree({timestamp}).png'
     fig.savefig(filename)
 
@@ -89,7 +84,6 @@ def DecisionTree(new_data):
     with open(filename, 'rb') as img_file:
         img_base64 = base64.b64encode(img_file.read()).decode('utf-8')
 
-  
     return img_base64
 
 def RandomForest(new_data):
@@ -102,17 +96,12 @@ def RandomForest(new_data):
     label_counts = results_df['Predicted Label'].value_counts()
 
     # Plotting the distribution of predictions
-
-
-    # Plotting the distribution of predictions
     fig, ax = plt.subplots()
     label_counts.plot(kind='bar', ax=ax, title='Distribution of Predictions')
     ax.set_xlabel('Attack Type')
     ax.set_ylabel('Count')
     ax.set_xticklabels(ax.get_xticklabels(), rotation=45)
 
-  
-  
     filename = f'plot_DecisionTree({timestamp}).png'
     fig.savefig(filename)
 
@@ -120,7 +109,6 @@ def RandomForest(new_data):
     with open(filename, 'rb') as img_file:
         img_base64 = base64.b64encode(img_file.read()).decode('utf-8')
 
-  
     return img_base64
 
 def KNN(new_data):
@@ -133,17 +121,12 @@ def KNN(new_data):
     label_counts = results_df['Predicted Label'].value_counts()
 
     # Plotting the distribution of predictions
-
-
-    # Plotting the distribution of predictions
     fig, ax = plt.subplots()
     label_counts.plot(kind='bar', ax=ax, title='Distribution of Predictions')
     ax.set_xlabel('Attack Type')
     ax.set_ylabel('Count')
     ax.set_xticklabels(ax.get_xticklabels(), rotation=45)
 
-  
-  
     filename = f'plot_DecisionTree({timestamp}).png'
     fig.savefig(filename)
 
@@ -151,5 +134,4 @@ def KNN(new_data):
     with open(filename, 'rb') as img_file:
         img_base64 = base64.b64encode(img_file.read()).decode('utf-8')
 
-  
     return img_base64
