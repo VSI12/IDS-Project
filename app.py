@@ -87,7 +87,7 @@ def submit():
         return "Error: No file selected for upload", 400
     
     # Save the uploaded file uniquely to prevent conflicts
-    file_path = '/assets/uploaded_datasets' + file.filename + ({timestamp})
+    file_path = '/assets/uploaded_datasets' + file.filename + str({timestamp})
     file.save('dataset.csv')
 
     try:
