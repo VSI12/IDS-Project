@@ -24,10 +24,10 @@ route_accessed = {"upload_KNN": False, "upload_DecisionTree": False, "upload_Nai
 
 #for generating the foilders for the confusion matrices
 confusion_matrix_folder = 'Confusion Matrices'
-confusion_matrix_decisionTree = 'Confusion Matrices/Confusion Matrices DecisionTree'
-confusion_matrix_KNN = 'Confusion Matrices/Confusion Matrices KNN'
-confusion_matrix_NaiveBayes = 'Confusion Matrices/confusion Matrices NaiveBayes'
-confusion_matrix_RandomForest = 'Confusion Matrices/confusion Matrices RandomForest'
+confusion_matrix_decisionTree = 'assets/Confusion Matrices/Confusion Matrices DecisionTree'
+confusion_matrix_KNN = 'assets/Confusion Matrices/Confusion Matrices KNN'
+confusion_matrix_NaiveBayes = 'assets/Confusion Matrices/confusion Matrices NaiveBayes'
+confusion_matrix_RandomForest = 'assets/Confusion Matrices/confusion Matrices RandomForest'
 
 if not os.path.exists(confusion_matrix_folder):
     os.makedirs(confusion_matrix_folder)
@@ -79,6 +79,7 @@ def upload_RandomForest():
 @app.route('/results', methods=['POST'])
 def submit():
     from ids_logic import preprocess
+    timestamp = datetime.now().strftime("%Y-%m-%d_%H.%M.%S")
     global processed_data
 # Get uploaded file from request
     file = request.files.get('file')
@@ -86,7 +87,7 @@ def submit():
         return "Error: No file selected for upload", 400
     
     # Save the uploaded file uniquely to prevent conflicts
-    file_path = '/' + file.filename
+    file_path = '/assets/uploaded_datasets' + file.filename + ({timestamp})
     file.save('dataset.csv')
 
     try:

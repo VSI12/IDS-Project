@@ -5,7 +5,6 @@ from sklearn. neighbors import KNeighborsClassifier
 from sklearn.naive_bayes import GaussianNB 
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import LabelEncoder
-from sklearn.metrics import classification_report, accuracy_score
 
 
 categorical_columns=['protocol_type', 'service', 'flag']

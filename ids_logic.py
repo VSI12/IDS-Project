@@ -77,7 +77,7 @@ def DecisionTree(new_data):
     ax.set_ylabel('Count')
     ax.set_xticklabels(ax.get_xticklabels(), rotation=45)
 
-    filename = f'Confusion Matrices/Confusion Matrices DecisionTree/Plot_DecisionTree({timestamp}).png'
+    filename = f'assets/Confusion Matrices/Confusion Matrices DecisionTree/Plot_DecisionTree({timestamp}).png'
     fig.savefig(filename)
 
     #Convert plot to base64 for display in HTML
@@ -102,7 +102,7 @@ def RandomForest(new_data):
     ax.set_ylabel('Count')
     ax.set_xticklabels(ax.get_xticklabels(), rotation=45)
 
-    filename = f'Confusion Matrices/Confusion Matrices RandomForest/Plot_RandomForest({timestamp}).png'
+    filename = f'assets/Confusion Matrices/Confusion Matrices RandomForest/Plot_RandomForest({timestamp}).png'
     fig.savefig(filename)
 
     #Convert plot to base64 for display in HTML
@@ -127,7 +127,7 @@ def KNN(new_data):
     ax.set_ylabel('Count')
     ax.set_xticklabels(ax.get_xticklabels(), rotation=45)
 
-    filename = f'Confusion Matrices/Confusion Matrices KNN/Plot_KNN({timestamp}).png'
+    filename = f'assets/Confusion Matrices/Confusion Matrices KNN/Plot_KNN({timestamp}).png'
     fig.savefig(filename)
 
     #Convert plot to base64 for display in HTML
@@ -152,7 +152,7 @@ def GaussianNB(new_data):
     ax.set_ylabel('Count')
     ax.set_xticklabels(ax.get_xticklabels(), rotation=45)
 
-    filename = f'Confusion Matrices/confusion Matrices NaiveBayes/Plot_GaussianNB({timestamp}).png'
+    filename = f'assets/Confusion Matrices/confusion Matrices NaiveBayes/Plot_GaussianNB({timestamp}).png'
     fig.savefig(filename)
 
     #Convert plot to base64 for display in HTML
