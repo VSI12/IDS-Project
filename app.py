@@ -138,6 +138,7 @@ def process():
     elif route_accessed["upload_NaiveBayes"] == True:
             from ids_logic import GaussianNB
             route_accessed["upload_KNN"]=False
+            route_accessed["upload_NaiveBayes"]=False
             route_accessed["upload_DecisionTree"]=False
             img_base64 = GaussianNB(processed_data)
             
@@ -147,6 +148,7 @@ def process():
     
     elif route_accessed["upload_RandomForest"] == True:
             from ids_logic import RandomForest
+            route_accessed["upload_RandomForest"] = False
             route_accessed["upload_KNN"]=False
             route_accessed["upload_DecisionTree"]=False
             img_base64 = RandomForest(processed_data)
