@@ -1,6 +1,7 @@
-import base64
+import io
 import pandas as pd
 import os
+import boto3
 import pickle
 import seaborn as sns
 import matplotlib.pyplot as plt
@@ -14,6 +15,8 @@ from wtforms import FileField, SubmitField
 from werkzeug.utils import secure_filename
 
 app = Flask(__name__)
+s3 = boto3.client('s3')
+s3_bucket_name = os.getenv('S3_BUCKET_NAME')
 executor = ThreadPoolExecutor(max_workers=1)
 
 app.config['SECRET_KEY']='supersecret'
@@ -78,6 +81,7 @@ def upload_RandomForest():
 
 @app.route('/results', methods=['POST'])
 def submit():
+    global file_path
     from ids_logic import preprocess
     timestamp = datetime.now().strftime("%Y-%m-%d_%H.%M.%S")
     global processed_data
@@ -87,12 +91,12 @@ def submit():
         return "Error: No file selected for upload", 400
     
     # Save the uploaded file uniquely to prevent conflicts
-    file_path = '/assets/uploaded_datasets' + file.filename + str({timestamp})
-    file.save('dataset.csv')
+    file_path = '/assets/Uploaded-Dataset/' +  file.filename 
+    file.save('assets/Uploaded-Datasets/dataset.csv')
 
     try:
         # Preprocess the data (align columns, encode categorical features, etc.)
-        processed_data = preprocess('dataset.csv')
+        processed_data = preprocess('assets/Uploaded-Datasets/dataset.csv')
 
         # Check if preprocessed data is empty
         if processed_data.empty:
@@ -110,9 +114,6 @@ def submit():
     return render_template('result.html')
 
 def process():
- # Generate a timestamp
-    timestamp = datetime.now().strftime("%Y-%m-%d_%H.%M.%S")
-    
     # processed_data = session.get('processed_data')
 
     if route_accessed["upload_DecisionTree"] == True:
@@ -120,7 +121,7 @@ def process():
             route_accessed["upload_DecisionTree"]=False
             img_base64 = DecisionTree(processed_data)
             
-            os.remove('dataset.csv')  # Remove uploaded file
+            os.remove('assets/Uploaded-Datasets/dataset.csv')  # Remove uploaded file
             # Return data as JSON
             return jsonify({'confusion_matrix': img_base64})
             # return render_template('result.html', confusion_matrix=img_base64, results=results)
@@ -131,7 +132,7 @@ def process():
             route_accessed["upload_DecisionTree"]=False
             img_base64 = KNN(processed_data)
             
-            os.remove('dataset.csv')  # Remove uploaded file
+            os.remove('assets/Uploaded-Datasets/dataset.csv')  # Remove uploaded file
             # Return data as JSON
             return jsonify({'confusion_matrix': img_base64})
             
@@ -142,7 +143,7 @@ def process():
             route_accessed["upload_DecisionTree"]=False
             img_base64 = GaussianNB(processed_data)
             
-            os.remove('dataset.csv')  # Remove uploaded file
+            os.remove('assets/Uploaded-Datasets/dataset.csv')  # Remove uploaded file
             # Return data as JSON
             return jsonify({'confusion_matrix': img_base64})
     
@@ -153,7 +154,7 @@ def process():
             route_accessed["upload_DecisionTree"]=False
             img_base64 = RandomForest(processed_data)
             
-            os.remove('dataset.csv')  # Remove uploaded file
+            os.remove('assets/Uploaded-Datasets/dataset.csv')  # Remove uploaded file
             # Return data as JSON
             return jsonify({'confusion_matrix': img_base64})
     
