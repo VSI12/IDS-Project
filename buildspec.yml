@@ -4,7 +4,8 @@ phases:
   pre_build:
     commands:
       - echo Logging in to Amazon ECR...
-      - aws ecr get-login-password --region $ECR_REGION | docker login --username AWS --password-stdin $ECR_REPO
+      - aws ecr get-login-password --region $ECR_REGION | docker login
+        --username AWS --password-stdin $ECR_REPO
   build:
     commands:
       - echo Building the Docker image...
@@ -15,10 +16,12 @@ phases:
       - echo Pushing the Docker image to ECR...
       - docker push $ECR_REPO:latest
       - echo Writing image definitions file...
-      - printf '[{"name":"ids-app","imageUri":"%s"}]' $ECR_REPO:latest > imagedefinitions.json
+      - printf '[{"name":"ids-app","imageUri":"%s"}]' $ECR_REPO:latest >
+        imagedefinitions.json
 artifacts:
   files: imagedefinitions.json
 
 cache:
   paths:
-    - '/root/.cache/docker' 
+    - /root/.cache/docker
+    - '/tmp/*' 
