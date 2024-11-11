@@ -20,8 +20,3 @@ phases:
         imagedefinitions.json
 artifacts:
   files: imagedefinitions.json
-
-cache:
-  paths:
-    - /root/.cache/docker
-    - '/tmp/*' 

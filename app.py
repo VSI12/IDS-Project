@@ -1,11 +1,7 @@
-import io
 import pandas as pd
 import os
-import boto3
-import pickle
 import seaborn as sns
 import matplotlib.pyplot as plt
-import shutil
 
 from concurrent.futures import ThreadPoolExecutor
 from datetime import datetime
@@ -15,8 +11,6 @@ from wtforms import FileField, SubmitField
 from werkzeug.utils import secure_filename
 
 app = Flask(__name__)
-s3 = boto3.client('s3')
-s3_bucket_name = os.getenv('S3_BUCKET_NAME')
 executor = ThreadPoolExecutor(max_workers=1)
 
 app.config['SECRET_KEY']='supersecret'
@@ -26,7 +20,7 @@ app.debug = True
 route_accessed = {"upload_KNN": False, "upload_DecisionTree": False, "upload_NaiveBayes": False}
 
 #for generating the foilders for the confusion matrices
-confusion_matrix_folder = 'Confusion Matrices'
+confusion_matrix_folder = 'assets/Confusion Matrices'
 confusion_matrix_decisionTree = 'assets/Confusion Matrices/Confusion Matrices DecisionTree'
 confusion_matrix_KNN = 'assets/Confusion Matrices/Confusion Matrices KNN'
 confusion_matrix_NaiveBayes = 'assets/Confusion Matrices/confusion Matrices NaiveBayes'
