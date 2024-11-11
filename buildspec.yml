@@ -18,3 +18,7 @@ phases:
       - printf '[{"name":"ids-app","imageUri":"%s"}]' $ECR_REPO:latest > imagedefinitions.json
 artifacts:
   files: imagedefinitions.json
+
+cache:
+  paths:
+    - '/root/.cache/docker' 
