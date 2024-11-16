@@ -8,9 +8,7 @@ import matplotlib.pyplot as plt
 from model import modelRFC, modelDTC, modelKNN, modelGNB
 from datetime import datetime
 from sklearn import preprocessing,metrics
-from sklearn.model_selection import train_test_split, cross_val_score
-from sklearn.preprocessing import LabelEncoder, OneHotEncoder, label_binarize
-from sklearn.metrics import accuracy_score,classification_report, confusion_matrix, roc_curve,auc
+
 import warnings
 warnings.filterwarnings('ignore')
 
