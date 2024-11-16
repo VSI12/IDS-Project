@@ -16,6 +16,6 @@ This Project demonstrates how to build and containerize a flask web-application 
   ![IDS-Architecture (2)](https://github.com/user-attachments/assets/fda8ad0d-d0b9-448c-92d7-ff1a46760c3a)
 
 
-## Deployment Steps
+## Setup and Deployment
 I have layed out the deployment steps in very high detail in my dev.to blog post. You're welcome to check it out.
 - **DEV.TO blog post**: [BLOG POST](https://dev.to/non-existent/deploying-a-flask-based-intrusion-detection-system-to-aws-ecs-with-cicd-4pgm)
