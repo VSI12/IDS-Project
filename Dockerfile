@@ -1,4 +1,4 @@
-FROM python:3.12
+FROM public.ecr.aws/docker/library/python:3.12
 
 #set the working dir
 WORKDIR /usr/src/app
